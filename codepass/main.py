@@ -9,6 +9,7 @@ from codepass.parallel_runtime import ParallelRuntime
 from codepass.utils import partition
 from codepass.get_report_file import get_report_files
 
+import asyncio
 
 from colorama import Fore
 
@@ -211,3 +212,7 @@ async def main():
     if config.b_score_enabled and report.get("b_score", 0) > config.b_score_threshold:
         print(Fore.RED + "B score is too high")
         exit(1)
+
+
+def run_main():
+    asyncio.run(main())

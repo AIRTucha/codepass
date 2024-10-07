@@ -1,6 +1,5 @@
 # codepass/__main__.py
-from codepass.main import main
-import asyncio
+from codepass.main import run_main
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    run_main()
