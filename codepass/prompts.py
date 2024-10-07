@@ -1,67 +1,65 @@
 file_complexity_evaluation_prompt = """
-Please, evaluate every function in the file to estimate cognitive complexity of the code.
+Please evaluate the cognitive complexity of each function in the provided code file. Use the following criteria to assess the complexity, focusing on identifying and prioritizing the most impactful issues.
 
-Major factors increasing complexity:
+Major factors that significantly increase complexity:
 
-- Deeply nested control structures
-- Complex algorithms
-- Low-level optimization
-- Usage of functional programming techniques
-- Usage of complex third-party libraries
-- Domain specific knowledge
-- Advanced coding techniques
-- Complicated logic
-- Complicated expressions
-- Mutable state
+ - Use of advanced algorithms requiring domain-specific knowledge
+ - Low-level optimizations
+ - Use of complex third-party libraries (e.g., Rx.js, Pandas, TensorFlow)
+ - Business logic requiring domain-specific expertise
+ - Advanced coding techniques (e.g., functional programming)
+ - Complex or anonymous expressions
+ - Excessive reliance on mutable state
+ - Minor factors that moderately increase complexity:
 
-Minor factors increasing complexity:
+ - Deeply nested control structures (more than 3 levels)
+ - Long classes (over 200 lines)
+ - Long functions (over 100 lines)
+ - Use of inheritance
+ - Parallelism and concurrency patterns
+ - Recursion
+ - Use of global variables
+ - Magic numbers (unexplained constants)
+ - Long lists of positional parameters
+ - Non-standard coding or naming conventions
+ - Use of advanced language features (e.g., metaprogramming)
+ - Short, unclear, or inconsistent names (for variables, functions, or classes)
 
-- Complex control structures
-- Unnecessary long classes which can be split into smaller ones
-- Unnecessary long functions which can be split into smaller ones
-- Inheritance
-- Parallelism
-- Recursion
-- Global variables
-- Magic numbers
-- Long lists of parameters
-- Complex networking
-- Non-standard coding conventions
-- Non-standard naming conventions
-- Usage of advanced language features
-- Short names
-- Unclear names
-- Inconsistent names
+Complexity Scoring:
 
-Pay attention to major factors.
+ - Only a combination of multiple major factors can result in a complexity score higher than 2.
+ - Focus on identifying the most significant major issues in the code that contribute to higher cognitive load.
+ - Provide suggestions for improvement based on the most significant issues identified.
 
 {format_instructions}
 
-Keep in mind JSON does not support comments.
+Please note that JSON does not support comments.
 
-Code: 
+{error_recovery_instructions}
+
+Code to evaluate: 
 
 {code}
-
 """
 
-file_abstraction_levels_detection = """
-Please, evaluate every function in the file to estimate abstraction levels of the code.
+file_abstraction_levels_detection = """Please evaluate each function in the provided code file to estimate the abstraction levels present in the code. Use the following categories to classify the abstraction level for each function or code segment:
 
-Abstraction levels:
+Abstraction Levels:
 
-- Operating-system operations and machine instructions
-- Programming-language structures and tools
-- Low-level implementation structures
-- Low-level problem-domain terms
-- High-level problem-domain terms
+ - Operating-system operations and machine instructions: Code interacting with hardware, system calls, or low-level machine operations.
+ - Programming-language structures and tools: Language-specific operations (e.g., arithmetics, comparators, boolean logic, bitwise operations etc.) and usage of language utilities.
+ - Low-level implementation structures: Data structures, algorithms, or patterns used for implementation, which are not directly related to the problem domain.
+ - Low-level problem-domain terms: Specific terms and concepts from the problem domain, but still close to implementation details.
+ - High-level problem-domain terms: Abstracted terms from the problem domain, focusing on business logic or high-level design without going into implementation details.
+ - Identify the highest level of abstraction used in each function and suggest any opportunities for improvement in terms of simplifying or refactoring the code to align with appropriate abstraction levels.
 
 {format_instructions}
 
-Keep in mind JSON does not support comments.
+Please note that JSON does not support comments.
 
-Code: 
+{error_recovery_instructions}
+
+Code to evaluate: 
 
 {code}
-
 """

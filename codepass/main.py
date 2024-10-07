@@ -1,228 +1,213 @@
-import sys
-
-from codepass.parsers import FileComplexityEvaluation, FileAbstractionEvaluation, FunctionAbstractionLevels, AbstractionLevelPriority
-from codepass.model import file_complexity, file_abstraction_levels
-from codepass.token_budget_estimator import TokenBudgetEstimator
-
-import asyncio
-
-import glob
-
-from dataclasses import dataclass
-
-from typing import Optional
-
-from json import dumps
 from importlib.metadata import version
+from codepass.read_code_files import read_files, CodeFile
 
+from codepass.token_budget_estimator import TokenBudgetEstimator
+from codepass.complexity_evaluation import evaluate_file_complexity
+from codepass.abstraction_levels_evaluation import evaluate_abstraction_levels
+from codepass.file_report import FileReport
+from codepass.parallel_runtime import ParallelRuntime
+from codepass.utils import partition
+from codepass.get_report_file import get_report_files
+
+
+from colorama import Fore
 
 import time
 
-@dataclass
-class ComplexityEvaluationResult:
-    file_path: str
-    line_count: int
-    a_score: int
-    improvement_suggestions: str
-
-    error_message: Optional[str] = None
-
-@dataclass
-class AbstractionEvaluationResult:
-    file_path: str
-    line_count: int
-    b_score: int
-    most_complex_function: str = ""
-
-    error_message: Optional[str] = None
+from codepass.get_config import get_config, CodepassConfig
+import time
+from typing import Dict, List
+from json import dumps
 
 
-code_improvement_suggestions_threshold = 3.3
-
-token_budget_estimator = TokenBudgetEstimator(200 * 1000)
-
-def evaluate_abstraction_level(levels: FunctionAbstractionLevels) -> int:
-    # print('Abstraction levels', levels.function_name, levels.abstraction_levels)
-    abstraction_levels_int = set([int(level.abstraction_level) for level in levels.abstraction_levels if level.confidence > 0.75 and level.priority > AbstractionLevelPriority.does_not_affect_core_behavior])
-    return len(abstraction_levels_int)
+OPEN_AI_TOKEN_LIMIT_PER_MINUTE = 200 * 1000
+MAX_TOKENS_PER_FILE = 100 * 1000
 
 
-def evaluate_complexity(code: str) -> FileComplexityEvaluation:
-    while True:
-        delay = token_budget_estimator.reserveBudget(code)
+def validate_config(config: CodepassConfig):
+    return not config.a_score_enabled and not config.b_score_enabled
 
-        if delay > 0:
-            print(f"Token budget exceeded, waiting {delay} seconds")
-            time.sleep(float(delay))
-        else:
-            break
 
-    return file_complexity.invoke({"code": code})
+def combine_report_and_files(
+    config: CodepassConfig,
+    code_files: List[CodeFile],
+    report_files: Dict[str, FileReport],
+):
+    (accepted_files, large_files) = partition(
+        code_files,
+        lambda file: file.token_count < MAX_TOKENS_PER_FILE,
+    )
 
-async def evaluate_file_complexity(file_path: str) -> ComplexityEvaluationResult:
-     with open(file_path) as f:
-        file_code = f.read()
+    (_, changed_files) = partition(
+        accepted_files,
+        lambda file: file.path in report_files
+        and report_files[file.path].hash == file.hash
+        and not config.clear,
+    )
+    return (changed_files, large_files)
 
-        print(f"Complexity processing {file_path}")
 
-        if len(file_code) == 0:
-            return ComplexityEvaluationResult(
-                file_path=file_path,
-                line_count=0,
-                a_score=0,
-                improvement_suggestions="",
+def run_evaluation(changed_files: List[CodeFile], config: CodepassConfig):
+    parallel_runtime = ParallelRuntime()
+    token_budget_estimator = TokenBudgetEstimator(OPEN_AI_TOKEN_LIMIT_PER_MINUTE)
+
+    if config.a_score_enabled:
+        for code_file in changed_files:
+            parallel_runtime.add_task(
+                evaluate_file_complexity, code_file, token_budget_estimator
             )
-        try:
-            augmented_code = "\n".join([f'{index+1} {line}' for [index, line] in enumerate(file_code.split("\n"))])
-   
-            file_evaluation: FileComplexityEvaluation = await asyncio.to_thread(evaluate_complexity, augmented_code)
-            print(f"Complexity Evaluated {file_path}")
-            number_of_lines = sum([f.end_line_number - f.start_line_number for f in file_evaluation.function_complexities])
 
-            if number_of_lines == 0:
-                return ComplexityEvaluationResult(
-                    file_path=file_path,
-                    line_count=0,
-                    a_score=0,
-                    improvement_suggestions="",
-                )
-            complexity_score = sum([int(f.code_complexity_score) * (f.end_line_number - f.start_line_number) for f in file_evaluation.function_complexities])
-            a_score = complexity_score / number_of_lines
-    
-            return ComplexityEvaluationResult(
-                line_count=number_of_lines,
-                a_score=a_score,
-                file_path=file_path,
-                improvement_suggestions=file_evaluation.improvement_suggestions if a_score > code_improvement_suggestions_threshold else "",
+    if config.b_score_enabled:
+        for code_file in changed_files:
+            parallel_runtime.add_task(
+                evaluate_abstraction_levels, code_file, token_budget_estimator
             )
-        except Exception as e:
-            print(f"Error processing file {file_path}: {e}")
-            return ComplexityEvaluationResult(
-                file_path=file_path,
-                line_count=0,
-                error_message=str(e),
-                a_score=0,
-                improvement_suggestions=""
+
+    return parallel_runtime.run_tasks()
+
+
+def combine_report_files(
+    config, complexity_result, changed_files, large_files, report_files
+):
+    new_report_files: Dict[str, FileReport] = {
+        result.path: FileReport(result.path, result.hash) for result in changed_files
+    }
+
+    for large_file in large_files:
+        new_report_files[result.file_path].mark_as_large(
+            large_file, config.a_score_enabled, config.b_score
+        )
+
+    for result in complexity_result:
+        new_report_files[result.file_path].add_data(result, config.a_score_threshold)
+
+    report_files.update(new_report_files)
+
+    return list(report_files.values())
+
+
+def aggregate_a_score(report_files_list: List[FileReport]):
+    total_lines = sum(
+        [
+            f.line_count
+            for f in report_files_list
+            if (hasattr(f, "a_score") and f.a_score > 0)
+        ]
+    )
+
+    if total_lines == 0:
+        return 0
+
+    total_a_score = sum([f.a_score * f.line_count for f in report_files_list])
+    return round(total_a_score / total_lines, 2)
+
+
+def aggregate_b_score(report_files_list: List[FileReport]):
+    total_lines = sum(
+        [
+            f.line_count
+            for f in report_files_list
+            if (hasattr(f, "b_score") and f.b_score > 0)
+        ]
+    )
+
+    if total_lines == 0:
+        return 0
+
+    total_b_score = sum([f.b_score * f.line_count for f in report_files_list])
+    return round(total_b_score / total_lines, 2)
+
+
+def aggregate_report(
+    report_files_list: List[FileReport],
+    config: CodepassConfig,
+):
+    file_count = len(report_files_list)
+    report = {
+        "file_count": file_count,
+        "version": version("codepass"),
+    }
+
+    if config.a_score_enabled:
+        report["a_score"] = aggregate_a_score(report_files_list)
+        report["recommendation_count"] = sum(
+            1 for f in report_files_list if f.improvement_suggestions != ""
+        )
+
+    if config.b_score_enabled:
+        report["b_score"] = aggregate_b_score(report_files_list)
+
+    report["files"] = [file.__dict__ for file in report_files_list]
+
+    return report
+
+
+def save_report(report):
+    with open("codepass.report.json", "w") as f:
+        f.write(
+            dumps(
+                report,
+                indent=4,
             )
-        
-async def evaluate_abstraction_levels(file_path: str) -> AbstractionEvaluationResult:
-     with open(file_path) as f:
-        file_code = f.read()
+        )
 
-        print(f"Abstraction Levels {file_path}")
 
-        if len(file_code) == 0:
-            return AbstractionEvaluationResult(
-                file_path=file_path,
-                line_count=0,
-                b_score=0,
-            )
-        try:
-            augmented_code = "\n".join([f'{index+1} {line}' for [index, line] in enumerate(file_code.split("\n"))])
-            while True:
-                delay = token_budget_estimator.reserveBudget(file_code)
+def print_recommendations(report_files_list):
+    print()
+    print(Fore.YELLOW + "Recommendations: ")
+    print()
+    report_files_list.sort(key=lambda x: x.a_score, reverse=True)
+    for file in report_files_list:
+        if file.improvement_suggestions:
+            print(Fore.YELLOW + "File:", file.file_path)
+            print()
+            print(Fore.GREEN + "Recommendation:", file.improvement_suggestions)
+            print()
 
-                if delay > 0:
-                    print(f"Token budget exceeded, waiting {delay} seconds")
-                    time.sleep(float(delay))
-                else:
-                    break
-            file_abstraction_level_evaluation: FileAbstractionEvaluation = await asyncio.to_thread(file_abstraction_levels.invoke, {"code": augmented_code})
-            print(f"Abstraction Evaluated {file_path}")
-            number_of_lines = sum([f.end_line_number - f.start_line_number for f in file_abstraction_level_evaluation.function_abstraction_level_evaluation])
-
-            if number_of_lines == 0:
-                return AbstractionEvaluationResult(
-                    file_path=file_path,
-                    line_count=0,
-                    b_score=0,
-                )
-            complexity_score = sum([evaluate_abstraction_level(f) * (f.end_line_number - f.start_line_number) for f in file_abstraction_level_evaluation.function_abstraction_level_evaluation])
-            abs_level_est = [ (evaluate_abstraction_level(f), f.function_name) for f in file_abstraction_level_evaluation.function_abstraction_level_evaluation]
-            abs_level_est.sort(key=lambda x: x[0], reverse=True)
-            most_complex_function = f'{abs_level_est[0][1]} - {abs_level_est[0][0]}' if len(abs_level_est) > 0 else ""
-            b_score = complexity_score / number_of_lines
-
-            return AbstractionEvaluationResult(
-                line_count=number_of_lines,
-                b_score=b_score,
-                file_path=file_path,
-                most_complex_function=most_complex_function,
-            )
-        except Exception as e:
-            print(f"Error processing file {file_path}: {e}")
-            return AbstractionEvaluationResult(
-                file_path=file_path,
-                line_count=0,
-                error_message=str(e),
-                a_score=0,
-            )
 
 async def main():
     start = time.time()
+    config = get_config()
 
+    if validate_config(config):
+        print("No analysis enabled")
+        return
 
-    
+    code_files = read_files(config.paths, config.ignore_files)
+    report_files = get_report_files(code_files)
 
-    complexity_tasks = []
+    (changed_files, large_files) = combine_report_and_files(
+        config, code_files, report_files
+    )
 
-    file_count = 0
-    for filename in sys.argv[1:]:
-        file_count += 1
-        complexity_tasks.append(evaluate_file_complexity(filename))
+    print(Fore.GREEN + "Analyzing files:", len(code_files))
+    print(Fore.GREEN + "Changed files:", len(changed_files))
 
-    function_complexity: list[ComplexityEvaluationResult] = []
-    complexity_result = await asyncio.gather(*complexity_tasks)
+    complexity_result = run_evaluation(changed_files, config)
 
-    for file_evaluation in complexity_result:
-        function_complexity.append(file_evaluation)
-
-
-    abstraction_levels_tasks = []
-
-
-    # for filename in sys.argv[1:]:
-    #     abstraction_levels_tasks.append(evaluate_abstraction_levels(filename))
-
-    function_abstraction_levels: list[AbstractionEvaluationResult] = []
-    abstraction_levels_result = await asyncio.gather(*abstraction_levels_tasks)
-
-    for file_evaluation in abstraction_levels_result:
-        function_abstraction_levels.append(file_evaluation)
+    report_files_list = combine_report_files(
+        config,
+        complexity_result,
+        changed_files,
+        large_files,
+        report_files,
+    )
 
     end = time.time()
 
+    report = aggregate_report(report_files_list, config)
 
-    print(f"Done " + str(end - start))
+    print(f"Done:", f"{str(round(end - start, 1))}s")
 
-    total_lines = sum(f.line_count for f in function_complexity)
-    total_a_score = sum(f.a_score * f.line_count for f in function_complexity)
-    # total_b_score = sum(f.b_score * f.line_count for f in function_abstraction_levels)
-    print()
+    save_report(report)
 
-    with open("codepass.report.json", "w") as f:
+    if config.recommendation_enabled and report.get("recommendation_count", 0) > 0:
+        print_recommendations(report_files_list)
 
-        f.write(dumps(
-            {
-            "file_count": file_count,
-            "version": version("codepass"),
-            "a_score": total_a_score / total_lines if total_lines > 0 else 0,
-            # "b_score": total_b_score / total_lines if total_lines > 0 else 0,
-            "recommendation_count": sum(1 for f in function_complexity if f.a_score > code_improvement_suggestions_threshold),
-            "files": [
-                {
-                    "file_path": f.file_path,
-                    "line_count": f.line_count,
-                    "a_score": f.a_score,
-                    # "b_score": function_abstraction_levels[i].b_score,
-                    "error_message": f.error_message if f.error_message else "",
-                    # "most_complex_function": function_abstraction_levels[i].most_complex_function if function_abstraction_levels[i].b_score > 2 else "",
-                    "improvement_suggestions": f.improvement_suggestions,
-    
-                }
-                for [i,f] in enumerate(function_complexity) if f.line_count > 0
-            ]
-        }, indent=4))
+    if config.a_score_enabled and report.get("a_score", 0) > config.a_score_threshold:
+        print(Fore.RED + "A score is too high")
+        exit(1)
 
-    
-
+    if config.b_score_enabled and report.get("b_score", 0) > config.b_score_threshold:
+        print(Fore.RED + "B score is too high")
+        exit(1)

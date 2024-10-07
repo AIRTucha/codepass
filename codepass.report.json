@@ -1,0 +1,149 @@
+{
+    "file_count": 14,
+    "version": "0.1.1",
+    "a_score": 2.39,
+    "recommendation_count": 0,
+    "b_score": 1.25,
+    "files": [
+        {
+            "file_path": "codepass/__main__.py",
+            "hash": "7324ca8265c0a819bacabd5161a0eb40",
+            "line_count": 1,
+            "a_score": 0,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 1.0,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/abstraction_levels_evaluation.py",
+            "hash": "adda12351989be0d979d5e261c9ed9ad",
+            "line_count": 80,
+            "a_score": 3.19,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 1.0,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/complexity_evaluation.py",
+            "hash": "44883cd6508b39eb7b338c67e6b2ca3b",
+            "line_count": 58,
+            "a_score": 2.52,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 1.0,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/file_report.py",
+            "hash": "7f971dc85aa14d29cb3d6df11cb81039",
+            "line_count": 38,
+            "a_score": 1.82,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 1.58,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/get_config.py",
+            "hash": "f4204b337bb52f69390361d10118c6ec",
+            "line_count": 80,
+            "a_score": 1.95,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 1.26,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/main.py",
+            "hash": "f184486ab344f5a896cc5bdaf6031071",
+            "line_count": 162,
+            "a_score": 2.46,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 1.0,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/model.py",
+            "hash": "a17d5d11843fcb1b3055ed5fd9ac6b8b",
+            "line_count": 21,
+            "a_score": 3.0,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 1.0,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/parallel_runtime.py",
+            "hash": "c1919cc3f6204d3355c09ccd56a79beb",
+            "line_count": 31,
+            "a_score": 2.16,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 1.0,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/parsers.py",
+            "hash": "be0c6483351a59fd495b0ac8d615df10",
+            "line_count": 6,
+            "a_score": 1.0,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 1.0,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/prompts.py",
+            "hash": "03ff6a0bb1ca3a1ad2869b846ba479a5",
+            "line_count": 62,
+            "a_score": 0,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 2.0,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/read_code_files.py",
+            "hash": "7f63e7804c676b0c07a09e025db6d428",
+            "line_count": 30,
+            "a_score": 1.8,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 1.8,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/token_budget_estimator.py",
+            "hash": "9d0982e4640123a22a66d81990a3d3ce",
+            "line_count": 64,
+            "a_score": 2.56,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 1.22,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/get_report_file.py",
+            "hash": "5887762af835e74b2878c7fd5bc8dc2b",
+            "line_count": 12,
+            "a_score": 1.58,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 1.0,
+            "b_score_error_message": ""
+        },
+        {
+            "file_path": "codepass/utils.py",
+            "hash": "ee0fce3dda60c456b0e529ea8171b963",
+            "line_count": 12,
+            "a_score": 2.0,
+            "a_score_error_message": "",
+            "improvement_suggestions": "",
+            "b_score": 3.0,
+            "b_score_error_message": ""
+        }
+    ]
+}

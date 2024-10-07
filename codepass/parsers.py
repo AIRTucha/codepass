@@ -1,8 +1,9 @@
 from langchain.output_parsers import PydanticOutputParser
 
-from pydantic import BaseModel, Field 
+from pydantic import BaseModel, Field
 from enum import Enum
-from typing import List
+from typing import List, Optional
+
 
 class CodeComplexityScore(str, Enum):
     good_production_code = 1
@@ -10,6 +11,7 @@ class CodeComplexityScore(str, Enum):
     domain_knowledge_required = 3
     complex_code = 4
     very_complex_code = 5
+
 
 code_complexity_score_description = """
 Well written highly readable simple code - 1
@@ -20,9 +22,7 @@ Extremely complex code due to many criteria- 5
 
 
 class FunctionComplexityEvaluation(BaseModel):
-    function_name: str = Field(
-        description="Name of the function"
-    )
+    function_name: str = Field(description="Name of the function")
     code_complexity_score: CodeComplexityScore = Field(
         description=code_complexity_score_description
     )
@@ -35,29 +35,44 @@ class FunctionComplexityEvaluation(BaseModel):
     end_line_number: int = Field(
         description="Number of the last line of the function, considering existing formatting"
     )
+    line_count: int = Field(description="Number of lines in the function")
+
+    def count_lines(self) -> int:
+        return self.end_line_number - self.start_line_number
+
+    def complexity_score_impact(self) -> int:
+        return int(self.code_complexity_score) * self.count_lines()
 
     def __str__(self) -> str:
         return f"FunctionComplexityEvaluation: {self.function_name} - {self.code_complexity_score} - {self.code_complexity_score_description} lines {self.start_line_number}-{self.end_line_number}"
-    
+
+
 improvements_suggestions_description = """
-Short suggestions how to make code more readable. Focus on just one major issues, name exact function, be specific. 
-Only suggest changes which will have a significant impact on the code readability.
-Avoid generic suggestions like "breakdown function" or "simplify logic".
-If you suggest to breakdown function, name the exact function and explain how it should be broken down.
+Short suggestions improvement for the code: 
+    - Focus on the most important issue
+    - Explain exactly how to refactor the code with details like names of abstractions involved in the refactoring
+    - Do not explanation motivation behind your suggestion
+    - 2 sentences max
 """
+
 
 class FileComplexityEvaluation(BaseModel):
     function_complexities: List[FunctionComplexityEvaluation] = Field(
         description="List of function complexity evaluations"
     )
-    improvement_suggestions: str = Field(
+    improvement_suggestions: Optional[str] = Field(
         description=improvements_suggestions_description
+    )
+    number_of_functions: int = Field(
+        description="Number of functions or methods in the file"
     )
 
     def __str__(self) -> str:
         return "\n".join(str(f) for f in self.function_complexity)
-    
+
+
 file_complexity_parser = PydanticOutputParser(pydantic_object=FileComplexityEvaluation)
+
 
 class AbstractionLevels(str, Enum):
     operation_system_and_machine_instructions = 1
@@ -66,19 +81,19 @@ class AbstractionLevels(str, Enum):
     low_level_domain_problem_logic = 4
     high_level_domain_problem_logic = 5
 
+
 class AbstractionLevelPriority(str, Enum):
     does_not_affect_core_behavior = 1
     minor_affect_core_behavior = 2
     major_affect_core_behavior = 3
 
-class AbstractionLevelsWithMotivation(BaseModel):
+
+class AbstractionLevelEstimation(BaseModel):
     motivation: str = Field(
         description="Short motivation of claim for the abstraction level"
     )
 
-    confidence: float = Field(
-        description="Detection confidence from 0 to 1"
-    )
+    confidence: float = Field(description="Detection confidence from 0 to 1")
 
     priority: AbstractionLevelPriority = Field(
         description="Estimate how much abstraction level affects core behavior from 1 to 3"
@@ -91,11 +106,10 @@ class AbstractionLevelsWithMotivation(BaseModel):
     def __str__(self) -> str:
         return f"AbstractionLevelsWithMotivation: {self.line_number} - {self.abstraction_level}"
 
+
 class FunctionAbstractionLevels(BaseModel):
-    function_name: str = Field(
-        description="Name of the function"
-    )
-    abstraction_levels: List[AbstractionLevelsWithMotivation] = Field(
+    function_name: str = Field(description="Name of the function")
+    abstraction_levels: List[AbstractionLevelEstimation] = Field(
         description="List of abstraction levels present in the function"
     )
     start_line_number: int = Field(
@@ -105,17 +119,25 @@ class FunctionAbstractionLevels(BaseModel):
         description="Number of the last line of the function, considering existing formatting"
     )
 
+    def count_lines(self) -> int:
+        return self.end_line_number - self.start_line_number
+
     def __str__(self) -> str:
         return f"FunctionAbstractionLevels: {self.function_name} - {self.code_complexity_score} - {self.code_complexity_score_description} lines {self.start_line_number}-{self.end_line_number}"
-    
 
 
 class FileAbstractionEvaluation(BaseModel):
-    function_abstraction_level_evaluation: List[FunctionAbstractionLevels] = Field(
+    function_abstraction_level_evaluations: List[FunctionAbstractionLevels] = Field(
         description="List of function abstraction level evaluations"
+    )
+    number_of_functions: int = Field(
+        description="Number of functions or methods in the file"
     )
 
     def __str__(self) -> str:
         return "\n".join(str(f) for f in self.function_complexity)
-    
-file_abstraction_level_parser = PydanticOutputParser(pydantic_object=FileAbstractionEvaluation)
+
+
+file_abstraction_level_parser = PydanticOutputParser(
+    pydantic_object=FileAbstractionEvaluation
+)
