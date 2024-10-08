@@ -8,9 +8,9 @@ Major factors that significantly increase complexity:
  - Use of complex third-party libraries (e.g., Rx.js, Pandas, TensorFlow)
  - Business logic requiring domain-specific expertise
  - Advanced coding techniques (e.g., functional programming)
- - Complex or anonymous expressions
  - Excessive reliance on mutable state
- - Minor factors that moderately increase complexity:
+
+Minor factors that moderately increase complexity:
 
  - Deeply nested control structures (more than 3 levels)
  - Long classes (over 200 lines)
