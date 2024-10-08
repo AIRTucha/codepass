@@ -15,8 +15,7 @@ if open_ai_key is None:
     raise ValueError("CODEPASS_OPEN_AI_KEY is not set")
 
 llm_model = ChatOpenAI(
-    model="gpt-4o-mini",
-    api_key=convert_to_secret_str(open_ai_key),
+    model="gpt-4o-mini", api_key=convert_to_secret_str(open_ai_key), temperature=0
 )
 
 file_complexity = (

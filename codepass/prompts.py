@@ -15,19 +15,17 @@ Major factors that significantly increase complexity:
  - Deeply nested control structures (more than 3 levels)
  - Long classes (over 200 lines)
  - Long functions (over 100 lines)
- - Use of inheritance
  - Parallelism and concurrency patterns
  - Recursion
  - Use of global variables
  - Magic numbers (unexplained constants)
  - Long lists of positional parameters
  - Non-standard coding or naming conventions
- - Use of advanced language features (e.g., metaprogramming)
+ - Use of advanced language features (e.g., metaprogramming, reflection, etc.)
  - Short, unclear, or inconsistent names (for variables, functions, or classes)
 
 Complexity Scoring:
 
- - Only a combination of multiple major factors can result in a complexity score higher than 2.
  - Focus on identifying the most significant major issues in the code that contribute to higher cognitive load.
  - Provide suggestions for improvement based on the most significant issues identified.
 
