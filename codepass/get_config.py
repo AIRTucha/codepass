@@ -15,9 +15,12 @@ class CodepassConfig:
     ignore_files: List[str]
     a_score_enabled: bool
     b_score_enabled: bool
-    recommendation_enabled: bool
+    print_improvement_suggestions: bool
     a_score_threshold: float
     b_score_threshold: float
+    details_enabled: bool
+    error_info_enabled: bool
+    improvement_suggestions_enabled: bool
     clear: bool
 
 
@@ -55,15 +58,15 @@ def parser_args(default_config: dict) -> Namespace:
         help="Enable B score",
         type=bool,
         action=BooleanOptionalAction,
-        default=default_config.get("b_score_enabled", True),
+        default=default_config.get("b_score_enabled", False),
     )
     parser.add_argument(
-        "-r",
-        "--recommendation",
-        help="Print recommendations",
+        "-ps",
+        "--print-improvement-suggestions",
+        help="Print of improvement suggestions",
         type=bool,
         action=BooleanOptionalAction,
-        default=default_config.get("recommendation_enabled", True),
+        default=default_config.get("print_improvement_suggestions", True),
     )
     parser.add_argument(
         "-at",
@@ -87,6 +90,30 @@ def parser_args(default_config: dict) -> Namespace:
         action=BooleanOptionalAction,
         default=False,
     )
+    parser.add_argument(
+        "-d",
+        "--details",
+        help="Print details",
+        type=bool,
+        action=BooleanOptionalAction,
+        default=default_config.get("details_enabled", False),
+    )
+    parser.add_argument(
+        "-e",
+        "--error-info",
+        help="Print error info",
+        type=bool,
+        action=BooleanOptionalAction,
+        default=default_config.get("error_info_enabled", False),
+    )
+    parser.add_argument(
+        "-i",
+        "--improvement-suggestions",
+        help="Print improvement suggestions",
+        type=bool,
+        action=BooleanOptionalAction,
+        default=default_config.get("improvement_suggestions_enabled", False),
+    )
 
     parser.add_argument("paths", nargs="*", type=str)
 
@@ -106,8 +133,11 @@ def get_config() -> CodepassConfig:
         ignore_files=ignore_files,
         a_score_enabled=args.a_score,
         b_score_enabled=args.b_score,
-        recommendation_enabled=args.recommendation,
+        print_improvement_suggestions=args.print_improvement_suggestions,
         a_score_threshold=args.a_score_threshold,
         b_score_threshold=args.b_score_threshold,
         clear=args.clear,
+        details_enabled=args.details,
+        error_info_enabled=args.error_info,
+        improvement_suggestions_enabled=args.improvement_suggestions,
     )

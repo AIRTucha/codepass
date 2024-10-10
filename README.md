@@ -15,7 +15,7 @@ It's also sensitive to code quality best practices—things like avoiding global
 
 The overall score for a project should ideally be below **3** to ensure the code is maintainable and easy to understand. However, some files that involve more advanced or domain-specific logic may range between **3 and 4**. The default threshold for the a-score across the whole project is **3.3**, meaning the codebase should strive to keep its complexity below this level, but you can adjust this based on your team's needs.
 
-### B-Score
+### B-Score [BETA]
 
 The b-score evaluates your code’s according to the Single Level of Abstraction (SLA) principle promoted by Uncle Bob’s *Clean Code*. The tool analyzes the abstraction levels in your code and assigns a score based on whether functions are mixing high- and low-level operations.
 
@@ -38,12 +38,15 @@ The CLI follows a specific convention for enabling and disabling boolean flags:
 This applies to all boolean flags in the tool.
 
 ```bash
--a, --a-score               # Enable A score (default: True), disable with --no-a-score
--b, --b-score               # Enable B score (default: True), disable with --no-b-score
--r, --recommendation        # Enable recommendations (default: True), disable with --no-recommendation
--at, --a-score-threshold    # Set A score threshold (default: 3.3)
--bt, --b-score-threshold    # Set B score threshold (default: 2.5)
--c,  --clear                # Clear existing reports and re-evaluate all files (default: False)
+-a, --a-score                           # Enable A score (default: True), disable with --no-a-score
+-b, --b-score               # Enable B score (default: False), disable with --no-b-score
+-ps, --print-improvement-suggestions    # Enable print of improvement suggestions (default: false), disable with --no-print-improvement-suggestions 
+-at, --a-score-threshold                # Set A score threshold (default: 3.3)
+-bt, --b-score-threshold                # Set B score threshold (default: 2.5)
+-c,  --clear                            # Clear existing reports and re-evaluate all files (default: False)
+-d, --details                           # Add details for every function into report file (default: False)
+-e, --error-info                        # Add debug error message to report file (default: False)
+-i, --improvement-suggestions           # Add improvement suggestion to report file (default: False)
 ```
 
 ### Configuration File
@@ -117,11 +120,11 @@ Analyzing files: 14
 Changed files: 3
 Progress 100% 
 Done: 13.9s
-Recommendations: 
+Improvement Suggestions: 
 
 File: astrogpt/handler/llm_reasoning/collect_data.py
 
-Recommendation: Refactor the collect_data function by breaking it down into smaller functions that handle specific tasks, such as handling user input, updating user information, and managing actions taken. This will reduce its cognitive complexity and improve readability.
+Suggestion: Refactor the collect_data function by breaking it down into smaller functions that handle specific tasks, such as handling user input, updating user information, and managing actions taken. This will reduce its cognitive complexity and improve readability.
 
 a-score is too high
 ```
@@ -131,7 +134,7 @@ a-score is too high
 ```json
 {
     "file_count": 1,
-    "version": "0.1.1",
+    "version": "0.2.0",
     "a_score": 2.98,
     "recommendation_count": 0,
     "b_score": 1.0,
@@ -141,10 +144,7 @@ a-score is too high
             "hash": "e62be0853d65c71a2600c8a614566ba4",
             "line_count": 86,
             "a_score": 2.98,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
             "b_score": 1.0,
-            "b_score_error_message": ""
         }
     ]
 }
