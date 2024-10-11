@@ -2,8 +2,8 @@ from importlib.metadata import version
 from codepass.read_code_files import read_files, CodeFile
 
 from codepass.token_budget_estimator import TokenBudgetEstimator
-from codepass.complexity_evaluation import evaluate_file_complexity
-from codepass.abstraction_levels_evaluation import evaluate_abstraction_levels
+from codepass.scores.evaluate_a_score import evaluate_a_score
+from codepass.scores.evaluate_b_score import evaluate_b_score
 from codepass.file_report import FileReport
 from codepass.parallel_runtime import ParallelRuntime
 from codepass.utils import partition
@@ -55,13 +55,13 @@ def run_evaluation(changed_files: List[CodeFile], config: CodepassConfig):
     if config.a_score_enabled:
         for code_file in changed_files:
             parallel_runtime.add_task(
-                evaluate_file_complexity, code_file, token_budget_estimator
+                evaluate_a_score, code_file, token_budget_estimator, config
             )
 
     if config.b_score_enabled:
         for code_file in changed_files:
             parallel_runtime.add_task(
-                evaluate_abstraction_levels, code_file, token_budget_estimator
+                evaluate_b_score, code_file, token_budget_estimator, config
             )
 
     return parallel_runtime.run_tasks()
@@ -75,12 +75,12 @@ def combine_report_files(
     }
 
     for large_file in large_files:
-        new_report_files[result.file_path].mark_as_large(
-            large_file, config.a_score_enabled, config.b_score
-        )
+        if large_file.path not in report_files:
+            report_files[large_file.path] = FileReport(large_file.path, large_file.hash)
+        report_files[large_file.path].mark_as_large(large_file, config)
 
     for result in complexity_result:
-        new_report_files[result.file_path].add_data(result, config.a_score_threshold)
+        new_report_files[result.file_path].add_data(result, config)
 
     report_files.update(new_report_files)
 
@@ -153,16 +153,16 @@ def save_report(report):
         )
 
 
-def print_recommendations(report_files_list):
+def print_improvement_suggestions(report_files_list):
     print()
-    print(Fore.YELLOW + "Recommendations: ")
+    print(Fore.YELLOW + "Improvement Suggestions: ")
     print()
     report_files_list.sort(key=lambda x: x.a_score, reverse=True)
     for file in report_files_list:
         if file.improvement_suggestions:
             print(Fore.YELLOW + "File:", file.file_path)
             print()
-            print(Fore.GREEN + "Recommendation:", file.improvement_suggestions)
+            print(Fore.GREEN + "Suggestion:", file.improvement_suggestions)
             print()
 
 
@@ -202,8 +202,11 @@ async def main():
 
     save_report(report)
 
-    if config.recommendation_enabled and report.get("recommendation_count", 0) > 0:
-        print_recommendations(report_files_list)
+    if (
+        config.print_improvement_suggestions
+        and report.get("recommendation_count", 0) > 0
+    ):
+        print_improvement_suggestions(report_files_list)
 
     if config.a_score_enabled and report.get("a_score", 0) > config.a_score_threshold:
         print(Fore.RED + "A score is too high")

@@ -1,19 +1,19 @@
 [tool.poetry]
 name = "codepass"
-version = "0.1.2"
+version = "0.2.0"
 description = ""
 authors = ["airtucha <airtucha@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "3.12.2"
-langchain = "^0.2.0"
-langchain-core = "^0.2.0"
-langchain-community = "^0.2.0"
-langchain-openai = "^0.1.7"
 mypy = "1.9.0"
 typer = "^0.12.5"
 colorama = "^0.4.6"
+langchain = "^0.3.2"
+langchain-core = "^0.3.10"
+langchain-community = "^0.3.1"
+langchain-openai = "^0.2.2"
 
 [build-system]
 requires = ["poetry-core"]

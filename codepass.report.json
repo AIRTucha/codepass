@@ -1,149 +1,660 @@
 {
-    "file_count": 14,
-    "version": "0.1.1",
-    "a_score": 2.39,
+    "file_count": 18,
+    "version": "0.1.4",
+    "a_score": 1.86,
     "recommendation_count": 0,
-    "b_score": 1.25,
+    "b_score": 1.17,
     "files": [
         {
             "file_path": "codepass/__main__.py",
-            "hash": "7324ca8265c0a819bacabd5161a0eb40",
-            "line_count": 1,
+            "hash": "d145a4ea0a702ce24c11aabbc842687b",
+            "line_count": 1.5,
             "a_score": 0,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 1.0,
-            "b_score_error_message": ""
-        },
-        {
-            "file_path": "codepass/abstraction_levels_evaluation.py",
-            "hash": "adda12351989be0d979d5e261c9ed9ad",
-            "line_count": 80,
-            "a_score": 3.19,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 1.0,
-            "b_score_error_message": ""
-        },
-        {
-            "file_path": "codepass/complexity_evaluation.py",
-            "hash": "44883cd6508b39eb7b338c67e6b2ca3b",
-            "line_count": 58,
-            "a_score": 2.52,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 1.0,
-            "b_score_error_message": ""
+            "a_score_details": {},
+            "b_score": 1.4,
+            "b_score_details": {
+                "run_main": {
+                    "line_count": 3,
+                    "score": 1.4,
+                    "description": "The function run_main has a moderate impact from technical domain logic and project-specific knowledge, with business logic being central to its behavior. Low-level implementation details are minimal."
+                }
+            }
         },
         {
             "file_path": "codepass/file_report.py",
-            "hash": "7f971dc85aa14d29cb3d6df11cb81039",
-            "line_count": 38,
-            "a_score": 1.82,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 1.58,
-            "b_score_error_message": ""
+            "hash": "ce9e9b009c44700ab0b90e04d03a2111",
+            "line_count": 48.0,
+            "a_score": 1.34,
+            "a_score_details": {
+                "_add_error_message": {
+                    "line_count": 9,
+                    "score": 1.23,
+                    "description": "The function has some readability issues due to nested conditionals but is generally straightforward."
+                },
+                "_add_improvement_suggestions": {
+                    "line_count": 13,
+                    "score": 1.26,
+                    "description": "Similar to _add_error_message, it has some readability issues but is generally clear."
+                },
+                "add_data": {
+                    "line_count": 20,
+                    "score": 1.44,
+                    "description": "The function has moderate complexity due to conditional logic and variable assignments."
+                },
+                "mark_as_large": {
+                    "line_count": 16,
+                    "score": 1.33,
+                    "description": "The function is straightforward but has some conditional complexity."
+                },
+                "load_from_dict": {
+                    "line_count": 6,
+                    "score": 1.33,
+                    "description": "The function has moderate complexity due to exception handling and dictionary updates."
+                }
+            },
+            "b_score": 0.6,
+            "b_score_details": {
+                "FileReport.__init__": {
+                    "line_count": 2,
+                    "score": 0.0,
+                    "description": "The constructor initializes attributes with minimal low-level operations and moderate business logic impact."
+                },
+                "FileReport._add_error_message": {
+                    "line_count": 9,
+                    "score": 0.6,
+                    "description": "This method primarily handles business logic related to error messages with minimal low-level operations."
+                },
+                "FileReport._add_improvement_suggestions": {
+                    "line_count": 13,
+                    "score": 0.6,
+                    "description": "Similar to _add_error_message, this method focuses on business logic for improvement suggestions."
+                },
+                "FileReport.add_data": {
+                    "line_count": 19,
+                    "score": 0.7,
+                    "description": "This method combines various reports and applies business logic, with moderate technical domain logic impact."
+                },
+                "FileReport.mark_as_large": {
+                    "line_count": 15,
+                    "score": 0.8,
+                    "description": "This method is heavily influenced by business logic regarding file size evaluation."
+                },
+                "FileReport.load_from_dict": {
+                    "line_count": 6,
+                    "score": 0.0,
+                    "description": "This method involves some technical domain logic for loading data but is primarily focused on business logic."
+                }
+            }
         },
         {
             "file_path": "codepass/get_config.py",
-            "hash": "f4204b337bb52f69390361d10118c6ec",
-            "line_count": 80,
-            "a_score": 1.95,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 1.26,
-            "b_score_error_message": ""
+            "hash": "1541730f87c0636eaa92363304d86fc3",
+            "line_count": 80.25,
+            "a_score": 1.68,
+            "a_score_details": {
+                "find_ignore_files": {
+                    "line_count": 4,
+                    "score": 1.19,
+                    "description": "Simple function with straightforward logic and minimal complexity."
+                },
+                "load_config_file": {
+                    "line_count": 5,
+                    "score": 1.4,
+                    "description": "Basic file loading with error handling, requiring some knowledge of file structure."
+                },
+                "parser_args": {
+                    "line_count": 78,
+                    "score": 1.75,
+                    "description": "Moderate complexity due to multiple argument definitions and conditionals."
+                },
+                "get_config": {
+                    "line_count": 20,
+                    "score": 1.57,
+                    "description": "Simple orchestration of other functions with minimal complexity."
+                }
+            },
+            "b_score": 1.09,
+            "b_score_details": {
+                "find_ignore_files": {
+                    "line_count": 4,
+                    "score": 0.0,
+                    "description": "Moderate impact from technical domain logic and business logic, with minimal influence from low-level implementation and external components."
+                },
+                "load_config_file": {
+                    "line_count": 5,
+                    "score": 0.6,
+                    "description": "Moderate impact from project-specific knowledge and external component interfacing, with lower influence from business logic."
+                },
+                "parser_args": {
+                    "line_count": 78,
+                    "score": 1.3,
+                    "description": "Strong influence from business logic and technical domain logic, with moderate impact from project-specific knowledge."
+                },
+                "get_config": {
+                    "line_count": 20,
+                    "score": 0.6,
+                    "description": "Moderate impact from business logic and technical domain logic, with some influence from project-specific knowledge."
+                }
+            }
         },
         {
             "file_path": "codepass/main.py",
-            "hash": "f184486ab344f5a896cc5bdaf6031071",
-            "line_count": 162,
-            "a_score": 2.46,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 1.0,
-            "b_score_error_message": ""
-        },
-        {
-            "file_path": "codepass/model.py",
-            "hash": "a17d5d11843fcb1b3055ed5fd9ac6b8b",
-            "line_count": 21,
-            "a_score": 3.0,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 1.0,
-            "b_score_error_message": ""
+            "hash": "89ffd8b648ff36b8ae44b8da961eebe3",
+            "line_count": 0.0,
+            "a_score": 0,
+            "a_score_details": {},
+            "b_score": 0,
+            "b_score_details": {}
         },
         {
             "file_path": "codepass/parallel_runtime.py",
             "hash": "c1919cc3f6204d3355c09ccd56a79beb",
-            "line_count": 31,
-            "a_score": 2.16,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 1.0,
-            "b_score_error_message": ""
-        },
-        {
-            "file_path": "codepass/parsers.py",
-            "hash": "be0c6483351a59fd495b0ac8d615df10",
-            "line_count": 6,
-            "a_score": 1.0,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 1.0,
-            "b_score_error_message": ""
-        },
-        {
-            "file_path": "codepass/prompts.py",
-            "hash": "03ff6a0bb1ca3a1ad2869b846ba479a5",
-            "line_count": 62,
-            "a_score": 0,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 2.0,
-            "b_score_error_message": ""
+            "line_count": 20.25,
+            "a_score": 1.26,
+            "a_score_details": {
+                "run": {
+                    "line_count": 1,
+                    "score": 1.07,
+                    "description": "Simple function with clear purpose and minimal complexity."
+                },
+                "_handle_result": {
+                    "line_count": 5,
+                    "score": 1.16,
+                    "description": "Simple callback function with minimal complexity."
+                },
+                "add_task": {
+                    "line_count": 2,
+                    "score": 1.09,
+                    "description": "Straightforward function for adding tasks with clear parameters."
+                },
+                "run_tasks": {
+                    "line_count": 15,
+                    "score": 1.41,
+                    "description": "Moderate complexity due to control structures and handling of futures."
+                },
+                "_print_progress": {
+                    "line_count": 5,
+                    "score": 1.11,
+                    "description": "Simple function for printing progress with minimal complexity."
+                },
+                "_print_finish": {
+                    "line_count": 3,
+                    "score": 1.1,
+                    "description": "Simple function for printing finish message with minimal complexity."
+                }
+            },
+            "b_score": 1.22,
+            "b_score_details": {
+                "run": {
+                    "line_count": 1,
+                    "score": 0.6,
+                    "description": "The run method primarily focuses on submitting tasks to an executor, with moderate influence from external components and some project-specific knowledge. Low-level implementation details are minimal."
+                },
+                "add_task": {
+                    "line_count": 1,
+                    "score": 0.0,
+                    "description": "The add_task method is primarily concerned with managing tasks, with a moderate influence from business logic and minimal impact from low-level operations."
+                },
+                "run_tasks": {
+                    "line_count": 15,
+                    "score": 2.0,
+                    "description": "The run_tasks method heavily relies on external components and technical domain logic to execute tasks concurrently, with significant business logic guiding its flow."
+                },
+                "_print_progress": {
+                    "line_count": 5,
+                    "score": 0.0,
+                    "description": "The _print_progress method has minimal impact on the overall function behavior, primarily serving as a utility function."
+                },
+                "_print_finish": {
+                    "line_count": 3,
+                    "score": 0.0,
+                    "description": "Similar to _print_progress, the _print_finish method has minimal impact and serves a utility purpose."
+                }
+            }
         },
         {
             "file_path": "codepass/read_code_files.py",
             "hash": "7f63e7804c676b0c07a09e025db6d428",
-            "line_count": 30,
-            "a_score": 1.8,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 1.8,
-            "b_score_error_message": ""
+            "line_count": 22.5,
+            "a_score": 1.7,
+            "a_score_details": {
+                "add_line_numbers": {
+                    "line_count": 3,
+                    "score": 1.18,
+                    "description": "Simple function with minor readability issues due to list comprehension."
+                },
+                "estimate_token_count": {
+                    "line_count": 3,
+                    "score": 1.0,
+                    "description": "Very straightforward function with no complexity."
+                },
+                "read_files": {
+                    "line_count": 24,
+                    "score": 1.85,
+                    "description": "Moderate complexity due to control structures and some project-specific knowledge required."
+                }
+            },
+            "b_score": 1.52,
+            "b_score_details": {
+                "add_line_numbers": {
+                    "line_count": 3,
+                    "score": 0.0,
+                    "description": "The function primarily focuses on string manipulation with minimal low-level operations. It has some business logic for formatting but lacks significant technical domain knowledge or project-specific dependencies."
+                },
+                "estimate_token_count": {
+                    "line_count": 3,
+                    "score": 0.0,
+                    "description": "This function is straightforward, primarily counting characters in a string. It has minimal impact from low-level operations or technical domain knowledge."
+                },
+                "read_files": {
+                    "line_count": 24,
+                    "score": 1.9,
+                    "description": "This function involves file I/O operations, which have a moderate low-level impact. It also incorporates significant business logic for processing files and relies on project-specific knowledge for handling file paths and contents."
+                }
+            }
         },
         {
             "file_path": "codepass/token_budget_estimator.py",
             "hash": "9d0982e4640123a22a66d81990a3d3ce",
-            "line_count": 64,
-            "a_score": 2.56,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 1.22,
-            "b_score_error_message": ""
+            "line_count": 45.0,
+            "a_score": 1.6,
+            "a_score_details": {
+                "estimate_remaining_budget": {
+                    "line_count": 14,
+                    "score": 1.52,
+                    "description": "The function is straightforward with some minor readability issues due to variable naming. It has simple control structures and requires basic knowledge of token usage."
+                },
+                "estimated_push_back_seconds": {
+                    "line_count": 21,
+                    "score": 1.7,
+                    "description": "The function has moderate complexity due to nested control structures and requires some understanding of token budgeting. Readability is acceptable but could be improved."
+                },
+                "_get_active_tokens": {
+                    "line_count": 7,
+                    "score": 1.44,
+                    "description": "The function is simple and readable, with basic control structures. It requires some understanding of the token usage context."
+                },
+                "reserveBudget": {
+                    "line_count": 15,
+                    "score": 1.64,
+                    "description": "The function has moderate complexity due to the use of locking and nested function calls. Readability is good, but the logic could be clearer."
+                },
+                "await_budget": {
+                    "line_count": 7,
+                    "score": 1.53,
+                    "description": "The function has moderate complexity due to the loop and conditional logic. Readability is acceptable, but the infinite loop structure may be confusing."
+                }
+            },
+            "b_score": 1.09,
+            "b_score_details": {
+                "estimate_remaining_budget": {
+                    "line_count": 14,
+                    "score": 0.7,
+                    "description": "The function relies on basic arithmetic and list comprehension, with moderate influence from domain logic related to token budgeting."
+                },
+                "estimated_push_back_seconds": {
+                    "line_count": 21,
+                    "score": 1.3,
+                    "description": "This function uses the output of another function and contains logic for determining time delays based on token usage, indicating a strong reliance on domain logic."
+                },
+                "reserveBudget": {
+                    "line_count": 15,
+                    "score": 1.3,
+                    "description": "The function integrates business logic for budget reservation and uses synchronization mechanisms, indicating a significant role of business logic."
+                },
+                "await_budget": {
+                    "line_count": 8,
+                    "score": 0.8,
+                    "description": "This function primarily focuses on the business logic of waiting for budget availability, with minimal low-level operations involved."
+                }
+            }
         },
         {
             "file_path": "codepass/get_report_file.py",
             "hash": "5887762af835e74b2878c7fd5bc8dc2b",
-            "line_count": 12,
-            "a_score": 1.58,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 1.0,
-            "b_score_error_message": ""
+            "line_count": 9.0,
+            "a_score": 1.45,
+            "a_score_details": {
+                "load_report_file": {
+                    "line_count": 5,
+                    "score": 1.2,
+                    "description": "The function is straightforward with basic error handling and file reading. Minor readability issues due to the lack of comments."
+                },
+                "get_report_files": {
+                    "line_count": 7,
+                    "score": 1.63,
+                    "description": "The function involves some complexity due to the use of comprehensions and conditionals, requiring some understanding of the data structure. Moderate readability issues due to nested structures."
+                }
+            },
+            "b_score": 1.52,
+            "b_score_details": {
+                "load_report_file": {
+                    "line_count": 5,
+                    "score": 0.7,
+                    "description": "The function primarily focuses on loading a report file, which is a business logic operation. Low-level implementation and external interfacing have a moderate impact, while technical domain knowledge is minimal."
+                },
+                "get_report_files": {
+                    "line_count": 7,
+                    "score": 2.1,
+                    "description": "This function integrates multiple aspects, including technical domain logic for processing report files and business logic for filtering them. Project-specific knowledge plays a significant role due to the use of the FileReport class."
+                }
+            }
         },
         {
             "file_path": "codepass/utils.py",
             "hash": "ee0fce3dda60c456b0e529ea8171b963",
-            "line_count": 12,
-            "a_score": 2.0,
-            "a_score_error_message": "",
-            "improvement_suggestions": "",
-            "b_score": 3.0,
-            "b_score_error_message": ""
+            "line_count": 9.0,
+            "a_score": 1.25,
+            "a_score_details": {
+                "partition": {
+                    "line_count": 12,
+                    "score": 1.25,
+                    "description": "The function is relatively straightforward with clear naming conventions and minimal complexity. It uses basic control structures with a simple predicate check."
+                }
+            },
+            "b_score": 0.0,
+            "b_score_details": {
+                "partition": {
+                    "line_count": 12,
+                    "score": 0.0,
+                    "description": "The function primarily focuses on partitioning a list based on a predicate, with moderate influence from technical domain logic and business logic. Low-level implementation details and project-specific knowledge have minimal impact."
+                }
+            }
+        },
+        {
+            "file_path": "codepass/llm/a_score_parser.py",
+            "hash": "14a228c8b3a7e6aa1761773ec384bef4",
+            "line_count": 69.75,
+            "a_score": 2.31,
+            "a_score_details": {
+                "line_count": {
+                    "line_count": 4,
+                    "score": 1.23,
+                    "description": "Simple function with straightforward logic and clear naming."
+                },
+                "_mean_weighted_linear_complexity_score": {
+                    "line_count": 22,
+                    "score": 2.17,
+                    "description": "Moderate complexity due to multiple calculations and weighted scores."
+                },
+                "_normalized_mean_correction_sum_weighted_sq_complexity_score": {
+                    "line_count": 47,
+                    "score": 2.63,
+                    "description": "Higher complexity due to nested calculations and multiple conditions."
+                },
+                "a_score_per_line": {
+                    "line_count": 18,
+                    "score": 2.14,
+                    "description": "Moderate complexity with several calculations and conditions."
+                },
+                "__str__": {
+                    "line_count": 2,
+                    "score": 1.2,
+                    "description": "Simple string representation with clear logic."
+                }
+            },
+            "b_score": 0.68,
+            "b_score_details": {
+                "a_score_per_line": {
+                    "line_count": 18,
+                    "score": 0.7,
+                    "description": "The function relies moderately on technical domain knowledge and has a fair amount of business logic, while low-level implementation and external interfacing play a minor role."
+                },
+                "_normalized_mean_correction_sum_weighted_sq_complexity_score": {
+                    "line_count": 47,
+                    "score": 0.8,
+                    "description": "This function heavily relies on technical domain knowledge for complex calculations, with some influence from project-specific knowledge."
+                },
+                "_mean_weighted_linear_complexity_score": {
+                    "line_count": 21,
+                    "score": 0.6,
+                    "description": "The function uses technical domain knowledge and project-specific knowledge moderately, with low-level implementation having a minor role."
+                },
+                "line_count": {
+                    "line_count": 4,
+                    "score": 0.0,
+                    "description": "This function has minimal impact from technical domain knowledge and low-level implementation, focusing mainly on business logic."
+                },
+                "__str__": {
+                    "line_count": 2,
+                    "score": 0.0,
+                    "description": "The string representation function has minimal impact from all layers, primarily serving a formatting purpose."
+                }
+            }
+        },
+        {
+            "file_path": "codepass/llm/b_score_parser.py",
+            "hash": "20ca377d57c8c6f2edb5c328c27fdab1",
+            "line_count": 42.0,
+            "a_score": 1.36,
+            "a_score_details": {
+                "line_count": {
+                    "line_count": 2,
+                    "score": 1.05,
+                    "description": "Simple function with no complexity."
+                },
+                "b_score_per_line": {
+                    "line_count": 9,
+                    "score": 1.47,
+                    "description": "Moderate complexity due to list comprehension and conditional filtering."
+                },
+                "__str__": {
+                    "line_count": 0,
+                    "score": 0,
+                    "description": "Simple string representation with no complexity."
+                }
+            },
+            "b_score": 1.32,
+            "b_score_details": {
+                "FunctionBScoreEvaluation": {
+                    "line_count": 69,
+                    "score": 1.4,
+                    "description": "The function primarily relies on technical domain knowledge and business logic, with moderate project-specific knowledge and low-level implementation impact."
+                },
+                "FileBScoreEvaluation": {
+                    "line_count": 9,
+                    "score": 0.7,
+                    "description": "This function is more focused on managing evaluations and relies on technical domain knowledge with moderate business logic influence."
+                }
+            }
+        },
+        {
+            "file_path": "codepass/llm/estimate_a_score_prompt.py",
+            "hash": "b14c6393d1464544e42f4dcb2a21dd14",
+            "line_count": 7.5,
+            "a_score": 0,
+            "a_score_details": {},
+            "b_score": 0.0,
+            "b_score_details": {
+                "estimate_a_score_prompt": {
+                    "line_count": 15,
+                    "score": 0.0,
+                    "description": "The function primarily serves as a template for evaluation instructions, with minimal low-level operations and a moderate influence from business logic. It does not interact with external components directly."
+                }
+            }
+        },
+        {
+            "file_path": "codepass/llm/estimate_b_score_prompt.py",
+            "hash": "576bf909c22f1318b4e1d4a19c4b3734",
+            "line_count": 9.75,
+            "a_score": 1.11,
+            "a_score_details": {
+                "estimate_b_score_prompt": {
+                    "line_count": 13,
+                    "score": 1.11,
+                    "description": "The function is a simple string assignment with clear and straightforward content, making it highly readable and low in cognitive complexity."
+                }
+            },
+            "b_score": 0.8,
+            "b_score_details": {
+                "estimate_b_score_prompt": {
+                    "line_count": 13,
+                    "score": 0.8,
+                    "description": "The function primarily serves as a template for evaluating other functions, with a strong emphasis on business logic and formatting instructions. Low-level implementation and external interfacing are minimal."
+                }
+            }
+        },
+        {
+            "file_path": "codepass/llm/improvement_suggestion_a_score_prompt.py",
+            "hash": "846cf5f748491c727aee521b2eb751a0",
+            "line_count": 9.0,
+            "a_score": 0,
+            "a_score_details": {},
+            "b_score": 0.6,
+            "b_score_details": {
+                "improvement_suggestion_a_score_prompt": {
+                    "line_count": 18,
+                    "score": 0.6,
+                    "description": "The function primarily focuses on cognitive complexity and high-level suggestions, with minimal low-level operations. It moderately relies on technical domain knowledge and project-specific context, while business logic plays a significant role in shaping its behavior."
+                }
+            }
+        },
+        {
+            "file_path": "codepass/llm/improvement_suggestion_b_score_prompt.py",
+            "hash": "b6348fe0351dc074dc76693b48c01b10",
+            "line_count": 10.5,
+            "a_score": 0,
+            "a_score_details": {},
+            "b_score": 0.6,
+            "b_score_details": {
+                "improvement_suggestion_b_score_prompt": {
+                    "line_count": 21,
+                    "score": 0.6,
+                    "description": "The function primarily focuses on high-level suggestions for code improvement, with minimal low-level operations and external interactions."
+                }
+            }
+        },
+        {
+            "file_path": "codepass/llm/model.py",
+            "hash": "7dada5ee17093f0940f6c9dc4a5bb0f5",
+            "line_count": 15.0,
+            "a_score": 0,
+            "a_score_details": {},
+            "b_score": 1.02,
+            "b_score_details": {
+                "file_a_score_model": {
+                    "line_count": 9,
+                    "score": 1.3,
+                    "description": "The function relies moderately on technical domain logic and project-specific knowledge, with some influence from external components."
+                },
+                "file_b_score_model": {
+                    "line_count": 9,
+                    "score": 1.3,
+                    "description": "Similar to file_a_score_model, this function also relies on technical domain logic and project-specific knowledge with moderate external interfacing."
+                },
+                "improvement_suggestion_a_score_model": {
+                    "line_count": 6,
+                    "score": 0.6,
+                    "description": "This function has a moderate impact from business logic and project-specific knowledge, with minimal low-level implementation."
+                },
+                "improvement_suggestion_b_score_model": {
+                    "line_count": 6,
+                    "score": 0.6,
+                    "description": "Similar to improvement_suggestion_a_score_model, this function also has a moderate impact from business logic and project-specific knowledge."
+                }
+            }
+        },
+        {
+            "file_path": "codepass/scores/evaluate_a_score.py",
+            "hash": "78c317fa93c4028f3d25d2f02e0a83e8",
+            "line_count": 70.5,
+            "a_score": 2.8,
+            "a_score_details": {
+                "file_line_count": {
+                    "line_count": 6,
+                    "score": 1.21,
+                    "description": "Simple summation of line counts from function complexities."
+                },
+                "compute_file_a_score": {
+                    "line_count": 8,
+                    "score": 1.23,
+                    "description": "Simple summation of A scores per line from function complexities."
+                },
+                "compute_function_a_score": {
+                    "line_count": 6,
+                    "score": 1.21,
+                    "description": "Basic computation of A score per line with a conditional check."
+                },
+                "evaluate_a_score": {
+                    "line_count": 74,
+                    "score": 3.22,
+                    "description": "Complex function with multiple control structures, error handling, and external dependencies."
+                }
+            },
+            "b_score": 1.65,
+            "b_score_details": {
+                "file_line_count": {
+                    "line_count": 6,
+                    "score": 0.0,
+                    "description": "This function primarily sums line counts from function complexities, with minimal business logic or external interfacing."
+                },
+                "compute_file_a_score": {
+                    "line_count": 8,
+                    "score": 0.0,
+                    "description": "This function computes a score based on function complexities, relying moderately on technical logic."
+                },
+                "compute_function_a_score": {
+                    "line_count": 6,
+                    "score": 0.0,
+                    "description": "This function calculates a score per line for a function complexity, with moderate reliance on technical logic."
+                },
+                "evaluate_a_score": {
+                    "line_count": 74,
+                    "score": 2.1,
+                    "description": "This function integrates various components, heavily relying on business logic and project-specific knowledge."
+                }
+            }
+        },
+        {
+            "file_path": "codepass/scores/evaluate_b_score.py",
+            "hash": "da214c847781edb3ecb01a43d2dcd99b",
+            "line_count": 71.25,
+            "a_score": 1.98,
+            "a_score_details": {
+                "line_count": {
+                    "line_count": 6,
+                    "score": 1.12,
+                    "description": "Simple summation of line counts from function complexities."
+                },
+                "compute_file_b_score": {
+                    "line_count": 8,
+                    "score": 1.13,
+                    "description": "Simple summation of b_scores per line from function complexities."
+                },
+                "compute_function_b_score": {
+                    "line_count": 6,
+                    "score": 1.21,
+                    "description": "Includes a conditional check and a calculation based on line count."
+                },
+                "evaluate_b_score": {
+                    "line_count": 75,
+                    "score": 2.2,
+                    "description": "Complex control flow with multiple conditionals and error handling."
+                }
+            },
+            "b_score": 1.66,
+            "b_score_details": {
+                "line_count": {
+                    "line_count": 6,
+                    "score": 0.0,
+                    "description": "The function primarily sums line counts, with minimal business logic or external interfacing."
+                },
+                "compute_file_b_score": {
+                    "line_count": 8,
+                    "score": 0.0,
+                    "description": "The function computes a score based on line scores, relying moderately on technical logic."
+                },
+                "compute_function_b_score": {
+                    "line_count": 6,
+                    "score": 0.0,
+                    "description": "The function calculates a score per line, with moderate reliance on technical logic."
+                },
+                "evaluate_b_score": {
+                    "line_count": 75,
+                    "score": 2.1,
+                    "description": "The function integrates various components and business logic, heavily influencing its behavior."
+                }
+            }
         }
     ]
 }
