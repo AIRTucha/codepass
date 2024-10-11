@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "codepass"
-version = "0.2.0"
+version = "0.2.1"
 description = ""
 authors = ["airtucha <airtucha@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.12.2"
+python = "^3.9"
 mypy = "1.9.0"
 typer = "^0.12.5"
 colorama = "^0.4.6"

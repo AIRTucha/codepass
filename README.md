@@ -25,6 +25,10 @@ According to the SLA principle, each function should ideally operate at a single
 
 The CLI uses environment variables and accepts multiple arguments and flags.
 
+```bash
+codepass your_code/**/*.c 
+```
+
 ### Environment Variable
 
 - `CODEPASS_OPEN_AI_KEY`: Required for OpenAI API requests.
