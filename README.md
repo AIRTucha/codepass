@@ -29,7 +29,7 @@ The CLI uses environment variables and accepts multiple arguments and flags.
 codepass your_code/**/*.c 
 ```
 
-![main](./assets/example.svg)
+![main](https://raw.githubusercontent.com/AIRTucha/codepass/refs/heads/master/assets/example.svg)
 
 ### Environment Variable
 

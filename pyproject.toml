@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "codepass"
-version = "0.2.2"
-description = "A CLI tool to generate code snippets from natural language descriptions."
+version = "0.2.3"
+description = "A CLI tool to evaluate the quality of your code"
 authors = ["airtucha <airtucha@gmail.com>"]
 readme = "README.md"
 
