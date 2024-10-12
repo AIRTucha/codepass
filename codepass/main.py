@@ -25,6 +25,10 @@ OPEN_AI_TOKEN_LIMIT_PER_MINUTE = 200 * 1000
 MAX_TOKENS_PER_FILE = 100 * 1000
 
 
+def upper_estimate_token_count(code_files: List[CodeFile]):
+    return int(sum([file.token_count for file in code_files]) * 1.5)
+
+
 def validate_config(config: CodepassConfig):
     return not config.a_score_enabled and not config.b_score_enabled
 
@@ -183,6 +187,9 @@ async def main():
 
     print(Fore.GREEN + "Analyzing files:", len(code_files))
     print(Fore.GREEN + "Changed files:", len(changed_files))
+    print(
+        Fore.GREEN + f"Estimated token count: {upper_estimate_token_count(code_files)}"
+    )
 
     complexity_result = run_evaluation(changed_files, config)
 
@@ -197,6 +204,12 @@ async def main():
     end = time.time()
 
     report = aggregate_report(report_files_list, config)
+
+    print()
+    if report.get("a_score", 0) > 0:
+        print(f"A score: {report['a_score']}")
+    if report.get("b_score", 0) > 0:
+        print(f"B score: {report['b_score']}")
 
     print(f"Done:", f"{str(round(end - start, 1))}s")
 

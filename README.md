@@ -29,6 +29,8 @@ The CLI uses environment variables and accepts multiple arguments and flags.
 codepass your_code/**/*.c 
 ```
 
+![main](./assets/example.svg)
+
 ### Environment Variable
 
 - `CODEPASS_OPEN_AI_KEY`: Required for OpenAI API requests.
@@ -120,17 +122,90 @@ poetry add --dev <package>
 
 ### Terminal Output
 ```
-Analyzing files: 14
-Changed files: 3
+Analyzing files: 62
+Changed files: 62
+Token count: 161467
 Progress 100% 
-Done: 13.9s
+
+A score: 3.53
+B score: 2.08
+Done: 78.2s
+
 Improvement Suggestions: 
+
+File: astrogpt/handler/llm_reasoning/handle_main_menu.py
+
+Suggestion: Refactor the multiple `if-elif` statements that handle different `selected_action.selected_action` values into a dictionary that maps actions to their corresponding handler functions, which will simplify the control structure and improve readability.
+
+Refactor the `handle_main_menu` function by extracting the action handling logic into a new function, `handle_selected_action`, which takes `selected_action`, `chat`, `user`, and `session` as parameters and returns the corresponding action results. This will reduce the complexity of the main function and encapsulate the specific behaviors related to each action type.
 
 File: astrogpt/handler/llm_reasoning/collect_data.py
 
-Suggestion: Refactor the collect_data function by breaking it down into smaller functions that handle specific tasks, such as handling user input, updating user information, and managing actions taken. This will reduce its cognitive complexity and improve readability.
+Suggestion: Consolidate the repeated calls to `get_language(chat)` and `chat.get_message_text()` by storing their results in variables at the beginning of the `collect_data` function, which will reduce redundancy and improve readability.
 
-a-score is too high
+File: astrogpt/handler/llm_reasoning/generate_advice.py
+
+Suggestion: Refactor the `try-except` block to handle specific exceptions rather than a generic `Exception`, which will improve readability and reduce cognitive complexity by making the error handling more explicit and understandable.
+
+Refactor the `generate_advice` function by creating a helper function, `prepare_advice_input`, that consolidates the gathering and formatting of user data and previous messages into a single operation, thereby reducing the complexity of the main function and improving readability. This will encapsulate the logic for preparing the input for the advice generation, allowing `generate_advice` to focus on the orchestration of the advice generation process.
+
+File: astrogpt/handler/llm_reasoning/detect_unintended_behavior.py
+
+Suggestion: Refactor the `detect_unintended_behavior` function by creating a helper function, `check_warnings_limit`, to encapsulate the warning count check and exception raising logic. This will reduce the visible complexity of the main function and improve maintainability by isolating the warning limit behavior.
+
+File: astrogpt/handler/text_handler.py
+
+Suggestion: Refactor the `handle_text` function by extracting the user retrieval and creation logic into a separate function, such as `retrieve_or_create_user`, which would encapsulate the session management, user existence check, and welcome message sending. This will reduce the complexity of `handle_text` and improve readability by hiding the details of user management behind a dedicated function.
+
+File: astrogpt/bot_utils/send_reply_to_user.py
+
+Suggestion: Refactor the `send_reply_to_user` function by creating a helper function, `prepare_conversation_data`, that encapsulates the logic for gathering and formatting the user name, messages, actions taken, and user language. This will reduce the visible complexity of the main function and improve maintainability by isolating the data preparation logic.
+
+File: astrogpt/handler/llm_reasoning/select_action.py
+
+Suggestion: Refactor the `select_action` function by creating helper functions for retrieving user details (`get_user_details`), formatting messages (`format_conversation`), and preparing the input for `menu_chain.invoke` (`prepare_menu_input`), which will encapsulate the logic and reduce the visible complexity of the main function. This will streamline the function-level abstractions and make the code easier to maintain.
+
+File: astrogpt/handler/stop_handler.py
+
+Suggestion: Refactor the `stop_handler` function by creating a new helper function, `handle_user_subscription`, that encapsulates the logic for retrieving the user and updating their subscription status. This will reduce the complexity of `stop_handler` by hiding the user retrieval and subscription update operations behind a single function call.
+
+File: astrogpt/bot_utils/send_thinking_message.py
+
+Suggestion: Refactor the `send_thinking_message` function by creating a helper function, `prepare_conversation_data`, that encapsulates the logic for retrieving and formatting the user's previous messages and language, thus reducing the complexity of the main function and improving readability.
+
+File: astrogpt/db_utils/add_daily_forecast.py
+
+Suggestion: Refactor the `add_daily_forecast` function by creating a helper function, `create_daily_forecast`, to encapsulate the creation of the `DailyForecast` instance and another helper function, `commit_forecast`, to handle the session operations. This will reduce the complexity of the main function by hiding the component-level and function-level abstractions behind these new specialized functions.
+
+File: astrogpt/db_utils/create_user.py
+
+Suggestion: Refactor the `create_user` function by creating a helper function, `extract_user_info(chat: Chat)`, that encapsulates lines 8-10, which will reduce the visible complexity and separate the user information extraction from the user creation logic. This will simplify the `create_user` function, making it clearer and easier to maintain.
+
+File: astrogpt/db_utils/add_warning.py
+
+Suggestion: Extract the warning creation logic into a separate helper function, `create_warning`, which takes the necessary parameters and returns a new `Warning` instance. This will reduce the complexity of the `add_warning` function by encapsulating the object creation details.
+
+File: astrogpt/db_utils/get_last_advices.py
+
+Suggestion: Create a helper function, `query_user_advices`, to encapsulate the query logic for fetching user advices, which will reduce the complexity in `get_last_advices` by hiding the query details. This will allow `get_last_advices` to focus solely on orchestrating the retrieval of advices.
+
+File: astrogpt/db_utils/add_advice.py
+
+Suggestion: Refactor the `add_advice` function by creating a helper function, `create_advice_instance`, to encapsulate the creation of the `Advice` object, thereby reducing the function-level abstraction and improving readability. This will allow `add_advice` to focus solely on session management and advice persistence.
+
+File: astrogpt/db_utils/add_joke.py
+
+Suggestion: Refactor the `add_joke` function by creating a helper function, `create_joke_instance`, to encapsulate the creation of the `Joke` object, which will reduce the visible complexity and separate the concerns of object instantiation from database operations. This will allow `add_joke` to focus solely on session management and committing the joke.
+
+File: astrogpt/db_utils/get_last_messages.py
+
+Suggestion: Create a helper function, `query_user_messages`, that encapsulates the query logic for retrieving messages based on user ID, and call this function within `get_messages`. This will reduce the complexity of `get_messages` by hiding the query details and focusing it solely on the session and limit parameters.
+
+File: astrogpt/db_utils/remove_user.py
+
+Suggestion: Create a helper function, `execute_delete`, to encapsulate the execution and committing of the delete statement. This will reduce the visible complexity in `remove_user` by hiding the session execution details and focusing on the user removal logic.
+
+A score is too high
 ```
 
 ### Example JSON Report

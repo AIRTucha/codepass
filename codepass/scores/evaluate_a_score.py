@@ -111,7 +111,6 @@ def evaluate_a_score(
                     function_complexity.function_name: {
                         "line_count": function_complexity.line_count(),
                         "score": compute_function_a_score(function_complexity),
-                        "description": function_complexity.score_estimation_description,
                     }
                     for function_complexity in file_evaluation.function_complexities
                 },

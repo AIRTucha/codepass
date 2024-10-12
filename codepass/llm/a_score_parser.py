@@ -59,10 +59,6 @@ class FunctionAScoreEvaluation(BaseModel):
         0.7 - 1: Heavy use of advanced techniques that significantly add complexity without being essential for solving the problem (e.g., monads, currying, category theory)."
     )
 
-    score_estimation_description: str = Field(
-        description="Short description of selected score estimations"
-    )
-
     start_line_number: int = Field(
         description="Number of the first line of the function, considering existing formatting"
     )
@@ -170,7 +166,7 @@ class FunctionAScoreEvaluation(BaseModel):
         return a_score_pre_line
 
     def __str__(self) -> str:
-        return f"FunctionAScoreEvaluation: {self.function_name} - {self.a_score_per_line()} - {self.score_estimation_description} lines {self.start_line_number}-{self.end_line_number}"
+        return f"FunctionAScoreEvaluation: {self.function_name} - {self.a_score_per_line()} -  lines {self.start_line_number}-{self.end_line_number}"
 
 
 class FileAScoreEvaluation(BaseModel):

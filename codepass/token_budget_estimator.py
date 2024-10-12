@@ -70,7 +70,8 @@ class TokenBudgetEstimator:
         ]
 
     def reserveBudget(self, code: CodeFile) -> int:
-        with self.mutex:
+        self.mutex.acquire(timeout=5)
+        try:
             last_minute_used_tokens = self._get_active_tokens()
 
             push_back_seconds = estimated_push_back_seconds(
@@ -85,6 +86,8 @@ class TokenBudgetEstimator:
                 return 0
 
             return push_back_seconds
+        finally:
+            self.mutex.release()
 
     def await_budget(self, code: CodeFile) -> None:
         while True:

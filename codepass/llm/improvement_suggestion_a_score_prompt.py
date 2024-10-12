@@ -1,5 +1,5 @@
 improvement_suggestion_a_score_prompt = """
-Analyze the given code and provide suggestions to reduce its cognitive complexity. 
+Analyze the given code and provide suggestion to reduce its cognitive complexity. 
 
 Prioritize factors of cognitive complexity in the following order:
 
@@ -9,7 +9,7 @@ Prioritize factors of cognitive complexity in the following order:
 4. Control structures and expressions
 5. Readable the code is based on factors like naming conventions, formatting, and non-runtime characteristics
 
-Give just one concise and actionable suggestion. 2 sentence maximum per suggestion.
+Provide only one the most important suggestion. Skip introduction and motivation behind you suggestion, keep it short and focus on explaining the action. 2 sentence maximum.
 
 {error_recovery_instructions}
 

@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="terminal" baseProfile="full" viewBox="0 0 928 240" width="928" version="1.1">
+    <defs>
+        <termtosvg:template_settings xmlns:termtosvg="https://github.com/nbedos/termtosvg">
+            <termtosvg:screen_geometry columns="116" rows="14"/>
+            <termtosvg:animation type="css"/>
+        </termtosvg:template_settings>
+        <style type="text/css" id="generated-style"><![CDATA[#screen {
+                font-family: 'DejaVu Sans Mono', monospace;
+                font-style: normal;
+                font-size: 14px;
+            }
+
+        text {
+            dominant-baseline: text-before-edge;
+            white-space: pre;
+        }
+    
+            :root {
+                --animation-duration: 25378ms;
+            }
+
+            @keyframes roll {
+                0.000%{transform:translateY(0px)}
+2.329%{transform:translateY(-272px)}
+2.940%{transform:translateY(-544px)}
+4.118%{transform:translateY(-816px)}
+4.760%{transform:translateY(-1088px)}
+5.615%{transform:translateY(-1360px)}
+6.679%{transform:translateY(-1632px)}
+10.418%{transform:translateY(-1904px)}
+11.384%{transform:translateY(-2176px)}
+12.337%{transform:translateY(-2448px)}
+13.007%{transform:translateY(-2720px)}
+13.965%{transform:translateY(-2992px)}
+16.179%{transform:translateY(-3264px)}
+16.798%{transform:translateY(-3536px)}
+17.464%{transform:translateY(-3808px)}
+21.467%{transform:translateY(-4080px)}
+22.386%{transform:translateY(-4352px)}
+24.198%{transform:translateY(-4624px)}
+26.452%{transform:translateY(-4896px)}
+31.283%{transform:translateY(-5168px)}
+32.733%{transform:translateY(-5440px)}
+34.534%{transform:translateY(-5712px)}
+38.096%{transform:translateY(-5984px)}
+41.717%{transform:translateY(-6256px)}
+48.471%{transform:translateY(-6528px)}
+48.585%{transform:translateY(-6800px)}
+51.915%{transform:translateY(-7072px)}
+52.376%{transform:translateY(-7344px)}
+52.400%{transform:translateY(-7616px)}
+52.979%{transform:translateY(-7888px)}
+53.050%{transform:translateY(-8160px)}
+53.144%{transform:translateY(-8432px)}
+53.491%{transform:translateY(-8704px)}
+59.433%{transform:translateY(-8976px)}
+70.971%{transform:translateY(-9248px)}
+86.390%{transform:translateY(-9520px)}
+86.398%{transform:translateY(-9792px)}
+86.867%{transform:translateY(-10064px)}
+96.060%{transform:translateY(-10336px)}
+100.000%{transform:translateY(-10336px)}
+            }
+
+            #screen_view {
+                animation-duration: 25378ms;
+                animation-iteration-count:infinite;
+                animation-name:roll;
+                animation-timing-function: steps(1,end);
+                animation-fill-mode: forwards;
+            }
+        ]]></style>
+        <style type="text/css" id="user-style">
+            /* The colors defined below are the default 16 colors used for rendering text of the terminal. Adjust
+               them as needed.
+               PowerShell colors based on https://en.wikipedia.org/wiki/ANSI_escape_code#Colors */
+            .foreground {fill: #cccccc;}
+            .background {fill: #0c0c0c;}
+            .color0 {fill: #0c0c0c;}
+            .color1 {fill: #c50f1f;}
+            .color2 {fill: #13a10e;}
+            .color3 {fill: #c19c00;}
+            .color4 {fill: #0037da;}
+            .color5 {fill: #881798;}
+            .color6 {fill: #3a96dd;}
+            .color7 {fill: #cccccc;}
+            .color8 {fill: #767676;}
+            .color9 {fill: #e74856;}
+            .color10 {fill: #16c60c;}
+            .color11 {fill: #f9f1a5;}
+            .color12 {fill: #3b78ff;}
+            .color13 {fill: #b4009e;}
+            .color14 {fill: #61d6d6;}
+            .color15 {fill: #f2f2f2;}
+        </style>
+    </defs>
+    <svg id="screen" width="928" height="238" viewBox="0 0 928 238" preserveAspectRatio="xMidYMin slice">
+    <rect class="background" height="100%" width="100%" x="0" y="0"/><defs><g id="g1"><text x="0" textLength="320" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % </text><text x="320" textLength="8" class="background"> </text><text x="328" textLength="600" class="foreground">                                                                           </text></g><g id="g2"><text x="0" textLength="328" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % c</text><text x="328" textLength="8" class="background"> </text><text x="336" textLength="592" class="foreground">                                                                          </text></g><g id="g3"><text x="0" textLength="336" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % co</text><text x="336" textLength="8" class="background"> </text><text x="344" textLength="584" class="foreground">                                                                         </text></g><g id="g4"><text x="0" textLength="344" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % cod</text><text x="344" textLength="8" class="background"> </text><text x="352" textLength="576" class="foreground">                                                                        </text></g><g id="g5"><text x="0" textLength="352" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % code</text><text x="352" textLength="8" class="background"> </text><text x="360" textLength="568" class="foreground">                                                                       </text></g><g id="g6"><text x="0" textLength="360" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codep</text><text x="360" textLength="8" class="background"> </text><text x="368" textLength="560" class="foreground">                                                                      </text></g><g id="g7"><text x="0" textLength="384" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass</text><text x="384" textLength="8" font-weight="bold" class="foreground"> </text><text x="392" textLength="8" class="background"> </text><text x="400" textLength="528" class="foreground">                                                                  </text></g><g id="g8"><text x="0" textLength="400" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass a</text><text x="400" textLength="8" class="background"> </text><text x="408" textLength="520" class="foreground">                                                                 </text></g><g id="g9"><text x="0" textLength="408" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass as</text><text x="408" textLength="8" class="background"> </text><text x="416" textLength="512" class="foreground">                                                                </text></g><g id="g10"><text x="0" textLength="416" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass ast</text><text x="416" textLength="8" class="background"> </text><text x="424" textLength="504" class="foreground">                                                               </text></g><g id="g11"><text x="0" textLength="424" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astr</text><text x="424" textLength="8" class="background"> </text><text x="432" textLength="496" class="foreground">                                                              </text></g><g id="g12"><text x="0" textLength="456" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astrogpt</text><text x="456" textLength="8" font-weight="bold" class="foreground">/</text><text x="464" textLength="8" class="background"> </text><text x="472" textLength="456" class="foreground">                                                         </text></g><g id="g13"><text x="0" textLength="472" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astrogpt/l</text><text x="472" textLength="8" class="background"> </text><text x="480" textLength="448" class="foreground">                                                        </text></g><g id="g14"><text x="0" textLength="480" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astrogpt/ll</text><text x="480" textLength="8" class="background"> </text><text x="488" textLength="440" class="foreground">                                                       </text></g><g id="g15"><text x="0" textLength="488" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astrogpt/llm</text><text x="488" textLength="8" font-weight="bold" class="foreground">/</text><text x="496" textLength="8" class="background"> </text><text x="504" textLength="424" class="foreground">                                                     </text></g><g id="g16"><text x="0" textLength="504" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astrogpt/llm/*</text><text x="504" textLength="8" class="background"> </text><text x="512" textLength="416" class="foreground">                                                    </text></g><g id="g17"><text x="0" textLength="512" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astrogpt/llm/**</text><text x="512" textLength="8" class="background"> </text><text x="520" textLength="408" class="foreground">                                                   </text></g><g id="g18"><text x="0" textLength="520" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astrogpt/llm/**/</text><text x="520" textLength="8" class="background"> </text><text x="528" textLength="400" class="foreground">                                                  </text></g><g id="g19"><text x="0" textLength="528" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astrogpt/llm/**/*</text><text x="528" textLength="8" class="background"> </text><text x="536" textLength="392" class="foreground">                                                 </text></g><g id="g20"><text x="0" textLength="536" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astrogpt/llm/**/*.</text><text x="536" textLength="8" class="background"> </text><text x="544" textLength="384" class="foreground">                                                </text></g><g id="g21"><text x="0" textLength="544" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astrogpt/llm/**/*.p</text><text x="544" textLength="8" class="background"> </text><text x="552" textLength="376" class="foreground">                                               </text></g><g id="g22"><text x="0" textLength="552" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astrogpt/llm/**/*.py</text><text x="552" textLength="8" class="background"> </text><text x="560" textLength="368" class="foreground">                                              </text></g><g id="g23"><text x="0" textLength="928" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt % codepass astrogpt/llm/**/*.py                                               </text></g><g id="g24"><text x="0" textLength="8" class="background"> </text></g><g id="g25"><text x="0" textLength="152" class="color2">Analyzing files: 12</text></g><g id="g26"><text x="0" textLength="136" class="color2">Changed files: 12</text></g><g id="g27"><text x="0" textLength="144" class="color2">Token count: 32097</text></g><g id="g28"><text x="0" textLength="88" class="color2">Progress 0%</text><text x="88" textLength="8" class="background"> </text></g><g id="g29"><text x="0" textLength="88" class="color2">Progress 8%</text><text x="88" textLength="8" class="background"> </text></g><g id="g30"><text x="0" textLength="96" class="color2">Progress 16%</text><text x="96" textLength="8" class="background"> </text></g><g id="g31"><text x="0" textLength="96" class="color2">Progress 25%</text><text x="96" textLength="8" class="background"> </text></g><g id="g32"><text x="0" textLength="96" class="color2">Progress 33%</text><text x="96" textLength="8" class="background"> </text></g><g id="g33"><text x="0" textLength="96" class="color2">Progress 41%</text><text x="96" textLength="8" class="background"> </text></g><g id="g34"><text x="0" textLength="96" class="color2">Progress 50%</text><text x="96" textLength="8" class="background"> </text></g><g id="g35"><text x="0" textLength="96" class="color2">Progress 58%</text><text x="96" textLength="8" class="background"> </text></g><g id="g36"><text x="0" textLength="96" class="color2">Progress 66%</text><text x="96" textLength="8" class="background"> </text></g><g id="g37"><text x="0" textLength="96" class="color2">Progress 75%</text><text x="96" textLength="8" class="background"> </text></g><g id="g38"><text x="0" textLength="96" class="color2">Progress 83%</text><text x="96" textLength="8" class="background"> </text></g><g id="g39"><text x="0" textLength="96" class="color2">Progress 91%</text><text x="96" textLength="8" class="background"> </text></g><g id="g40"><text x="0" textLength="112" class="color2">Progress 100% </text></g><g id="g41"><text x="0" textLength="104" class="color2">A score: 2.07</text></g><g id="g42"><text x="0" textLength="88" class="color2">Done: 11.3s</text></g><g id="g43"><text x="0" textLength="928" class="foreground">alextukalo@Alexs-MacBook-Pro astrogpt %                                                                             </text></g></defs><g id="screen_view"><g><rect x="320" y="0" width="8" height="17" class="foreground"/><use xlink:href="#g1" y="0"/></g><g><rect x="328" y="272" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="272"/></g><g><rect x="336" y="544" width="8" height="17" class="foreground"/><use xlink:href="#g3" y="544"/></g><g><rect x="344" y="816" width="8" height="17" class="foreground"/><use xlink:href="#g4" y="816"/></g><g><rect x="352" y="1088" width="8" height="17" class="foreground"/><use xlink:href="#g5" y="1088"/></g><g><rect x="360" y="1360" width="8" height="17" class="foreground"/><use xlink:href="#g6" y="1360"/></g><g><rect x="392" y="1632" width="8" height="17" class="foreground"/><use xlink:href="#g7" y="1632"/></g><g><rect x="400" y="1904" width="8" height="17" class="foreground"/><use xlink:href="#g8" y="1904"/></g><g><rect x="408" y="2176" width="8" height="17" class="foreground"/><use xlink:href="#g9" y="2176"/></g><g><rect x="416" y="2448" width="8" height="17" class="foreground"/><use xlink:href="#g10" y="2448"/></g><g><rect x="424" y="2720" width="8" height="17" class="foreground"/><use xlink:href="#g11" y="2720"/></g><g><rect x="464" y="2992" width="8" height="17" class="foreground"/><use xlink:href="#g12" y="2992"/></g><g><rect x="472" y="3264" width="8" height="17" class="foreground"/><use xlink:href="#g13" y="3264"/></g><g><rect x="480" y="3536" width="8" height="17" class="foreground"/><use xlink:href="#g14" y="3536"/></g><g><rect x="496" y="3808" width="8" height="17" class="foreground"/><use xlink:href="#g15" y="3808"/></g><g><rect x="504" y="4080" width="8" height="17" class="foreground"/><use xlink:href="#g16" y="4080"/></g><g><rect x="512" y="4352" width="8" height="17" class="foreground"/><use xlink:href="#g17" y="4352"/></g><g><rect x="520" y="4624" width="8" height="17" class="foreground"/><use xlink:href="#g18" y="4624"/></g><g><rect x="528" y="4896" width="8" height="17" class="foreground"/><use xlink:href="#g19" y="4896"/></g><g><rect x="536" y="5168" width="8" height="17" class="foreground"/><use xlink:href="#g20" y="5168"/></g><g><rect x="544" y="5440" width="8" height="17" class="foreground"/><use xlink:href="#g21" y="5440"/></g><g><rect x="552" y="5712" width="8" height="17" class="foreground"/><use xlink:href="#g22" y="5712"/></g><g><use xlink:href="#g23" y="5984"/><rect x="0" y="6001" width="8" height="17" class="foreground"/><use xlink:href="#g24" y="6001"/></g><g><use xlink:href="#g23" y="6256"/><use xlink:href="#g25" y="6273"/><use xlink:href="#g26" y="6290"/><use xlink:href="#g27" y="6307"/><rect x="88" y="6324" width="8" height="17" class="color2"/><use xlink:href="#g28" y="6324"/></g><g><use xlink:href="#g23" y="6528"/><use xlink:href="#g25" y="6545"/><use xlink:href="#g26" y="6562"/><use xlink:href="#g27" y="6579"/><rect x="88" y="6596" width="8" height="17" class="color2"/><use xlink:href="#g29" y="6596"/></g><g><use xlink:href="#g23" y="6800"/><use xlink:href="#g25" y="6817"/><use xlink:href="#g26" y="6834"/><use xlink:href="#g27" y="6851"/><rect x="96" y="6868" width="8" height="17" class="color2"/><use xlink:href="#g30" y="6868"/></g><g><use xlink:href="#g23" y="7072"/><use xlink:href="#g25" y="7089"/><use xlink:href="#g26" y="7106"/><use xlink:href="#g27" y="7123"/><rect x="96" y="7140" width="8" height="17" class="color2"/><use xlink:href="#g31" y="7140"/></g><g><use xlink:href="#g23" y="7344"/><use xlink:href="#g25" y="7361"/><use xlink:href="#g26" y="7378"/><use xlink:href="#g27" y="7395"/><rect x="96" y="7412" width="8" height="17" class="color2"/><use xlink:href="#g32" y="7412"/></g><g><use xlink:href="#g23" y="7616"/><use xlink:href="#g25" y="7633"/><use xlink:href="#g26" y="7650"/><use xlink:href="#g27" y="7667"/><rect x="96" y="7684" width="8" height="17" class="color2"/><use xlink:href="#g33" y="7684"/></g><g><use xlink:href="#g23" y="7888"/><use xlink:href="#g25" y="7905"/><use xlink:href="#g26" y="7922"/><use xlink:href="#g27" y="7939"/><rect x="96" y="7956" width="8" height="17" class="color2"/><use xlink:href="#g34" y="7956"/></g><g><use xlink:href="#g23" y="8160"/><use xlink:href="#g25" y="8177"/><use xlink:href="#g26" y="8194"/><use xlink:href="#g27" y="8211"/><rect x="96" y="8228" width="8" height="17" class="color2"/><use xlink:href="#g35" y="8228"/></g><g><use xlink:href="#g23" y="8432"/><use xlink:href="#g25" y="8449"/><use xlink:href="#g26" y="8466"/><use xlink:href="#g27" y="8483"/><rect x="96" y="8500" width="8" height="17" class="color2"/><use xlink:href="#g36" y="8500"/></g><g><use xlink:href="#g23" y="8704"/><use xlink:href="#g25" y="8721"/><use xlink:href="#g26" y="8738"/><use xlink:href="#g27" y="8755"/><rect x="96" y="8772" width="8" height="17" class="color2"/><use xlink:href="#g37" y="8772"/></g><g><use xlink:href="#g23" y="8976"/><use xlink:href="#g25" y="8993"/><use xlink:href="#g26" y="9010"/><use xlink:href="#g27" y="9027"/><rect x="96" y="9044" width="8" height="17" class="color2"/><use xlink:href="#g38" y="9044"/></g><g><use xlink:href="#g23" y="9248"/><use xlink:href="#g25" y="9265"/><use xlink:href="#g26" y="9282"/><use xlink:href="#g27" y="9299"/><rect x="96" y="9316" width="8" height="17" class="color2"/><use xlink:href="#g39" y="9316"/></g><g><use xlink:href="#g23" y="9520"/><use xlink:href="#g25" y="9537"/><use xlink:href="#g26" y="9554"/><use xlink:href="#g27" y="9571"/><use xlink:href="#g40" y="9588"/><rect x="0" y="9605" width="8" height="17" class="color2"/><use xlink:href="#g24" y="9605"/></g><g><use xlink:href="#g23" y="9792"/><use xlink:href="#g25" y="9809"/><use xlink:href="#g26" y="9826"/><use xlink:href="#g27" y="9843"/><use xlink:href="#g40" y="9860"/><use xlink:href="#g41" y="9894"/><use xlink:href="#g42" y="9911"/><rect x="0" y="9928" width="8" height="17" class="color2"/><use xlink:href="#g24" y="9928"/></g><g><use xlink:href="#g23" y="10064"/><use xlink:href="#g25" y="10081"/><use xlink:href="#g26" y="10098"/><use xlink:href="#g27" y="10115"/><use xlink:href="#g40" y="10132"/><use xlink:href="#g41" y="10166"/><use xlink:href="#g42" y="10183"/><rect x="320" y="10200" width="8" height="17" class="foreground"/><use xlink:href="#g1" y="10200"/></g><g><use xlink:href="#g23" y="10336"/><use xlink:href="#g25" y="10353"/><use xlink:href="#g26" y="10370"/><use xlink:href="#g27" y="10387"/><use xlink:href="#g40" y="10404"/><use xlink:href="#g41" y="10438"/><use xlink:href="#g42" y="10455"/><use xlink:href="#g43" y="10472"/><rect x="0" y="10489" width="8" height="17" class="foreground"/><use xlink:href="#g24" y="10489"/></g></g></svg>
+</svg>

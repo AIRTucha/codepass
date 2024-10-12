@@ -52,10 +52,6 @@ class FunctionBScoreEvaluation(BaseModel):
         0.7 - 1: External component interactions are central to the function, heavily affecting its structure and behavior."
     )
 
-    score_estimation_description: str = Field(
-        description="Short description of selected score estimations"
-    )
-
     start_line_number: int = Field(
         description="Number of the first line of the function, considering existing formatting"
     )
