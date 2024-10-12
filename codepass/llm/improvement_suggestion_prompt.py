@@ -1,4 +1,4 @@
-improvement_suggestion_a_score_prompt = """
+improvement_suggestion_prompt = """
 Analyze the given code and provide suggestion to reduce its cognitive complexity. 
 
 Prioritize factors of cognitive complexity in the following order:
@@ -10,6 +10,10 @@ Prioritize factors of cognitive complexity in the following order:
 5. Readable the code is based on factors like naming conventions, formatting, and non-runtime characteristics
 
 Provide only one the most important suggestion. Skip introduction and motivation behind you suggestion, keep it short and focus on explaining the action. 2 sentence maximum.
+
+{format_instructions}
+
+Please note that JSON does not support comments.
 
 {error_recovery_instructions}
 

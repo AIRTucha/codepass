@@ -9,11 +9,9 @@ from codepass.llm.estimate_b_score_prompt import estimate_b_score_prompt
 from codepass.llm.a_score_parser import file_a_score_parser
 from codepass.llm.b_score_parser import file_b_score_parser
 
-from codepass.llm.improvement_suggestion_a_score_prompt import (
-    improvement_suggestion_a_score_prompt,
-)
-from codepass.llm.improvement_suggestion_b_score_prompt import (
-    improvement_suggestion_b_score_prompt,
+from codepass.llm.improvement_suggestion_parser import improvement_suggestion_parser
+from codepass.llm.improvement_suggestion_prompt import (
+    improvement_suggestion_prompt,
 )
 
 import os
@@ -54,18 +52,13 @@ file_b_score_model = (
     | file_b_score_parser
 )
 
-improvement_suggestion_a_score_model = (
+improvement_suggestion_model = (
     ChatPromptTemplate.from_template(
-        improvement_suggestion_a_score_prompt,
+        improvement_suggestion_prompt,
+        partial_variables={
+            "format_instructions": improvement_suggestion_parser.get_format_instructions()
+        },
     )
     | llm_model
-    | StrOutputParser()
-)
-
-improvement_suggestion_b_score_model = (
-    ChatPromptTemplate.from_template(
-        improvement_suggestion_b_score_prompt,
-    )
-    | llm_model
-    | StrOutputParser()
+    | improvement_suggestion_parser
 )

@@ -1,13 +1,13 @@
 from codepass.get_config import CodepassConfig
 from codepass.scores.evaluate_a_score import AScoreEvaluationResult
 from codepass.scores.evaluate_b_score import BScoreEvaluationResult
+from codepass.scores.suggest_improvements import ImprovementSuggestionResult
 from codepass.read_code_files import CodeFile
-from dataclasses import asdict
+from typing import Dict
 
 
 class FileReport:
     line_count: int = 0
-    improvement_suggestions = ""
 
     def __init__(self, file_path: str, hash: str):
         self.file_path = file_path
@@ -24,20 +24,11 @@ class FileReport:
             else:
                 self.error_message = report.error_message
 
-    def _add_improvement_suggestions(
-        self,
-        report: AScoreEvaluationResult | BScoreEvaluationResult,
-        is_improvement_suggestions_enabled: bool,
-    ):
-        if is_improvement_suggestions_enabled and report.improvement_suggestions:
-            if self.improvement_suggestions:
-                self.improvement_suggestions = (
-                    self.improvement_suggestions
-                    + "\n\n"
-                    + report.improvement_suggestions
-                )
-            else:
-                self.improvement_suggestions = report.improvement_suggestions
+    def add_improvement_suggestions(self, suggestions: ImprovementSuggestionResult):
+        self.improvement_suggestion = {}
+        self.improvement_suggestion["start_line"] = suggestions.start_line
+        self.improvement_suggestion["end_line"] = suggestions.end_line
+        self.improvement_suggestion["description"] = suggestions.improvement_suggestion
 
     def add_data(
         self,
@@ -56,9 +47,6 @@ class FileReport:
                 self.b_score_details = report.details
 
         self._add_error_message(report, config.error_info_enabled)
-        self._add_improvement_suggestions(
-            report, config.improvement_suggestions_enabled
-        )
 
     def mark_as_large(
         self,

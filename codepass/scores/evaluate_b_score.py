@@ -8,11 +8,9 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Any
 from codepass.read_code_files import CodeFile
 
-from codepass.get_config import CodepassConfig
-from codepass.llm.model import improvement_suggestion_b_score_model
 from langchain_core.exceptions import OutputParserException
 
-MAX_RETRIES = 1
+MAX_RETRIES = 7
 
 
 @dataclass
@@ -22,7 +20,6 @@ class BScoreEvaluationResult:
     b_score: int
 
     error_message: str = ""
-    improvement_suggestions: str = ""
 
     details: Dict[str, Dict[Any, Any]] = field(default_factory=dict)
 
@@ -59,7 +56,6 @@ def compute_function_b_score(
 def evaluate_b_score(
     code_file: CodeFile,
     token_budget_estimator: TokenBudgetEstimator,
-    config: CodepassConfig,
 ) -> BScoreEvaluationResult:
     error_recovery_instructions = ""
     for _ in range(MAX_RETRIES):
@@ -94,25 +90,10 @@ def evaluate_b_score(
 
             b_score = round(abstraction_level / number_of_lines, 2)
 
-            if (
-                b_score > config.b_score_threshold
-                and config.improvement_suggestions_enabled
-            ):
-                token_budget_estimator.await_budget(code_file)
-                improvement_suggestions = improvement_suggestion_b_score_model.invoke(
-                    {
-                        "code": code_file.code,
-                        "error_recovery_instructions": error_recovery_instructions,
-                    }
-                )
-            else:
-                improvement_suggestions = ""
-
             return BScoreEvaluationResult(
                 line_count=number_of_lines,
                 b_score=b_score,
                 file_path=code_file.path,
-                improvement_suggestions=improvement_suggestions,
                 details={
                     function_complexity.function_name: {
                         "line_count": function_complexity.line_count(),

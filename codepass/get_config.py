@@ -73,14 +73,14 @@ def parser_args(default_config: dict) -> Namespace:
         "--a-score-threshold",
         help="Threshold for A score",
         type=float,
-        default=default_config.get("a_score_threshold", 3.3),
+        default=default_config.get("a_score_threshold", 3),
     )
     parser.add_argument(
         "-bt",
         "--b-score-threshold",
         help="Threshold for B score",
         type=float,
-        default=default_config.get("b_score_threshold", 2.2),
+        default=default_config.get("b_score_threshold", 2),
     )
     parser.add_argument(
         "-c",
@@ -112,7 +112,7 @@ def parser_args(default_config: dict) -> Namespace:
         help="Print improvement suggestions",
         type=bool,
         action=BooleanOptionalAction,
-        default=default_config.get("improvement_suggestions_enabled", False),
+        default=default_config.get("improvement_suggestions_enabled", True),
     )
 
     parser.add_argument("paths", nargs="*", type=str)

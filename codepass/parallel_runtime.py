@@ -16,9 +16,9 @@ class Task:
 
 
 class ParallelRuntime:
-    _tasks: List[Task] = []
-
-    _results = []
+    def __init__(self):
+        self._tasks = []
+        self._results = []
 
     def _handle_result(self):
         def callback(future):
