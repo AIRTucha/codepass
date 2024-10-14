@@ -1,7 +1,7 @@
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.utils.utils import convert_to_secret_str
-from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnableSerializable
 
 from codepass.llm.estimate_a_score_prompt import estimate_a_score_prompt
 from codepass.llm.estimate_b_score_prompt import estimate_b_score_prompt
@@ -13,52 +13,78 @@ from codepass.llm.improvement_suggestion_parser import improvement_suggestion_pa
 from codepass.llm.improvement_suggestion_prompt import (
     improvement_suggestion_prompt,
 )
+from threading import Lock
+from typing import Any
 
 import os
 
 
-open_ai_key = os.getenv("CODEPASS_OPEN_AI_KEY")
+model_access_mutex = Lock()
+OPEN_AI_API_KEY_STR = os.getenv("CODEPASS_OPEN_AI_KEY")
 
-if open_ai_key is None:
+if OPEN_AI_API_KEY_STR is None:
     raise ValueError("CODEPASS_OPEN_AI_KEY is not set")
 
-llm_model = ChatOpenAI(
-    model="gpt-4o-mini",
-    api_key=convert_to_secret_str(open_ai_key),
-    temperature=0.0001,
-    seed=8315108,
-    top_p=1,
-)
+OPEN_AI_API_KEY = convert_to_secret_str(OPEN_AI_API_KEY_STR)
+TEMPERATURE = 0.0
+TOP_P = 1
+SEED = 3415322
+MAX_REQUEST_TIMEOUT = 60
+models_map = {}
 
-file_a_score_model = (
-    ChatPromptTemplate.from_template(
-        estimate_a_score_prompt,
-        partial_variables={
-            "format_instructions": file_a_score_parser.get_format_instructions()
-        },
-    )
-    | llm_model
-    | file_a_score_parser
-)
 
-file_b_score_model = (
-    ChatPromptTemplate.from_template(
-        estimate_b_score_prompt,
-        partial_variables={
-            "format_instructions": file_b_score_parser.get_format_instructions()
-        },
-    )
-    | llm_model
-    | file_b_score_parser
-)
+def get_llm_model(model_name: str):
+    with model_access_mutex:
+        if model_name not in models_map:
+            models_map[model_name] = ChatOpenAI(
+                model=model_name,
+                api_key=OPEN_AI_API_KEY,
+                temperature=TEMPERATURE,
+                seed=SEED,
+                top_p=1,
+                timeout=MAX_REQUEST_TIMEOUT,
+            )
 
-improvement_suggestion_model = (
-    ChatPromptTemplate.from_template(
-        improvement_suggestion_prompt,
-        partial_variables={
-            "format_instructions": improvement_suggestion_parser.get_format_instructions()
-        },
+        return models_map[model_name]
+
+
+def file_a_score_model(model_name: str) -> RunnableSerializable[dict, Any]:
+    llm_model = get_llm_model(model_name)
+    return (
+        ChatPromptTemplate.from_template(
+            estimate_a_score_prompt,
+            partial_variables={
+                "format_instructions": file_a_score_parser.get_format_instructions()
+            },
+        )
+        | llm_model
+        | file_a_score_parser
     )
-    | llm_model
-    | improvement_suggestion_parser
-)
+
+
+def file_b_score_model(model_name: str) -> RunnableSerializable[dict, Any]:
+    llm_model = get_llm_model(model_name)
+    return (
+        ChatPromptTemplate.from_template(
+            estimate_b_score_prompt,
+            partial_variables={
+                "format_instructions": file_b_score_parser.get_format_instructions()
+            },
+        )
+        | llm_model
+        | file_b_score_parser
+    )
+
+
+def improvement_suggestion_model(model_name: str) -> RunnableSerializable[dict, Any]:
+    llm_model = get_llm_model(model_name)
+    return (
+        ChatPromptTemplate.from_template(
+            improvement_suggestion_prompt,
+            partial_variables={
+                "format_instructions": improvement_suggestion_parser.get_format_instructions()
+            },
+        )
+        | llm_model
+        | improvement_suggestion_parser
+    )

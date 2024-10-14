@@ -22,10 +22,6 @@ from typing import Dict, List
 from json import dumps
 
 
-OPEN_AI_TOKEN_LIMIT_PER_MINUTE = 200 * 1000
-MAX_TOKENS_PER_FILE = 100 * 1000
-
-
 def upper_estimate_token_count(code_files: List[CodeFile]):
     return int(sum([file.token_count for file in code_files]) * 1.5)
 
@@ -41,7 +37,7 @@ def combine_report_and_files(
 ):
     (accepted_files, large_files) = partition(
         code_files,
-        lambda file: file.token_count < MAX_TOKENS_PER_FILE,
+        lambda file: file.token_count < config.max_context_size,
     )
 
     (_, changed_files) = partition(
@@ -56,18 +52,30 @@ def combine_report_and_files(
 def run_evaluation(
     token_budget_estimator, changed_files: List[CodeFile], config: CodepassConfig
 ):
-    parallel_runtime = ParallelRuntime()
+    parallel_runtime = ParallelRuntime(token_budget_estimator)
+
+    analyze_files = changed_files.copy()
+
+    analyze_files.sort(key=lambda file: file.token_count, reverse=True)
 
     if config.a_score_enabled:
-        for code_file in changed_files:
+        for code_file in analyze_files:
             parallel_runtime.add_task(
-                evaluate_a_score, code_file, token_budget_estimator
+                code_file.token_count,
+                evaluate_a_score,
+                code_file,
+                config.model_name,
+                token_budget_estimator,
             )
 
     if config.b_score_enabled:
-        for code_file in changed_files:
+        for code_file in analyze_files:
             parallel_runtime.add_task(
-                evaluate_b_score, code_file, token_budget_estimator
+                code_file.token_count,
+                evaluate_b_score,
+                code_file,
+                config.model_name,
+                token_budget_estimator,
             )
 
     return parallel_runtime.run_tasks()
@@ -180,11 +188,20 @@ def generate_suggestion_improvement(
         file for file in changed_files if file.path in need_improvements_file_names
     ]
 
-    parallel_runtime = ParallelRuntime()
+    if len(need_improvements_files) == 0:
+        return
+
+    print("Generating improvement suggestions")
+
+    parallel_runtime = ParallelRuntime(token_budget_estimator)
 
     for code_file in need_improvements_files:
         parallel_runtime.add_task(
-            suggest_improvements, code_file, token_budget_estimator
+            code_file.token_count,
+            suggest_improvements,
+            code_file,
+            config.model_name,
+            token_budget_estimator,
         )
 
     suggestion_improvements = parallel_runtime.run_tasks()
@@ -228,6 +245,22 @@ def print_improvement_suggestions(report_files_list):
             print()
 
 
+def print_errors(report_files_list):
+    print()
+    print(Fore.RED + "Errors: ")
+    print()
+    report_files_list.sort(key=sort_by_score, reverse=True)
+    for file in report_files_list:
+        if hasattr(file, "error_message"):
+            print(Fore.YELLOW + "File:", file.file_path)
+            print()
+            print(
+                Fore.RED + "Error Message:",
+                file.error_message,
+            )
+            print()
+
+
 async def main():
     start = time.time()
     config = get_config()
@@ -248,8 +281,8 @@ async def main():
     print(
         Fore.GREEN + f"Estimated token count: {upper_estimate_token_count(code_files)}"
     )
-
-    token_budget_estimator = TokenBudgetEstimator(OPEN_AI_TOKEN_LIMIT_PER_MINUTE)
+    print("Evaluate scores")
+    token_budget_estimator = TokenBudgetEstimator(config.token_rate_limit)
     complexity_result = run_evaluation(token_budget_estimator, changed_files, config)
 
     report_files_list = combine_report_files(
@@ -261,7 +294,6 @@ async def main():
     )
 
     if config.improvement_suggestions_enabled:
-        print("Generating improvement suggestions")
         generate_suggestion_improvement(
             config,
             token_budget_estimator,
@@ -289,6 +321,8 @@ async def main():
         and report.get("recommendation_count", 0) > 0
     ):
         print_improvement_suggestions(report_files_list)
+
+    print_errors(report_files_list)
 
     if config.a_score_enabled and report.get("a_score", 0) > config.a_score_threshold:
         print(Fore.RED + "A score is too high")

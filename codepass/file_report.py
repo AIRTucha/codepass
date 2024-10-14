@@ -3,7 +3,6 @@ from codepass.scores.evaluate_a_score import AScoreEvaluationResult
 from codepass.scores.evaluate_b_score import BScoreEvaluationResult
 from codepass.scores.suggest_improvements import ImprovementSuggestionResult
 from codepass.read_code_files import CodeFile
-from typing import Dict
 
 
 class FileReport:
@@ -19,7 +18,7 @@ class FileReport:
         is_error_enabled: bool,
     ):
         if is_error_enabled and report.error_message:
-            if self.error_message:
+            if hasattr(self, "error_message"):
                 self.error_message = self.error_message + "\n\n" + report.error_message
             else:
                 self.error_message = report.error_message
@@ -63,7 +62,15 @@ class FileReport:
             self.error_message = "File is too large to evaluate"
 
         if config.improvement_suggestions_enabled:
-            self.improvement_suggestions = "Breakdown into smaller files"
+            line_count = len(code_file.code.split("\n"))
+            self.add_improvement_suggestions(
+                ImprovementSuggestionResult(
+                    file_path=self.file_path,
+                    start_line=0,
+                    end_line=line_count,
+                    improvement_suggestion="Break down, the file is to large",
+                )
+            )
 
         self.line_count = code_file.code.count("\n")
 

@@ -174,10 +174,6 @@ class FileAScoreEvaluation(BaseModel):
         description="List of function complexity evaluations"
     )
 
-    number_of_functions: int = Field(
-        description="Number of functions or methods in the file"
-    )
-
     def __str__(self) -> str:
         return "\n".join(str(f) for f in self.function_complexity)
 

@@ -45,7 +45,7 @@ This applies to all boolean flags in the tool.
 
 ```bash
 -a, --a-score                           # Enable A score (default: True), disable with --no-a-score
--b, --b-score               # Enable B score (default: False), disable with --no-b-score
+-b, --b-score                           # Enable B score (default: False), disable with --no-b-score
 -ps, --print-improvement-suggestions    # Enable print of improvement suggestions (default: false), disable with --no-print-improvement-suggestions 
 -at, --a-score-threshold                # Set A score threshold (default: 3.3)
 -bt, --b-score-threshold                # Set B score threshold (default: 2.5)
@@ -53,6 +53,9 @@ This applies to all boolean flags in the tool.
 -d, --details                           # Add details for every function into report file (default: False)
 -e, --error-info                        # Add debug error message to report file (default: False)
 -i, --improvement-suggestions           # Add improvement suggestion to report file (default: True)
+-mc, --max-context-size                 # OpenAI model max context size (default: 32 000)
+-t,  --token-rate-limit                 # OpenAI token rate limit per minute (RPM) (default: 200 000)
+-m,  --model                            # OpenAI model name (default: gpt-4o-mini)
 ```
 
 ### Configuration File

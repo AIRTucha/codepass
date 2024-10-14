@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Any
 from codepass.read_code_files import CodeFile
 from langchain_core.exceptions import OutputParserException
-
+from openai import RateLimitError, APITimeoutError
 
 MAX_RETRIES = 7
 
@@ -52,32 +52,30 @@ def compute_function_a_score(
 
 def evaluate_a_score(
     code_file: CodeFile,
+    model_name: str,
     token_budget_estimator: TokenBudgetEstimator,
 ) -> AScoreEvaluationResult:
     error_recovery_instructions = ""
     for _ in range(MAX_RETRIES):
         try:
             token_budget_estimator.await_budget(code_file)
-            file_evaluation: FileAScoreEvaluation = file_a_score_model.invoke(
+            file_evaluation: FileAScoreEvaluation = file_a_score_model(
+                model_name
+            ).invoke(
                 {
                     "code": code_file.code,
                     "error_recovery_instructions": error_recovery_instructions,
                 }
             )
+
             number_of_lines = file_line_count(file_evaluation.function_complexities)
 
-            if number_of_lines == 0 or file_evaluation.number_of_functions == 0:
+            if number_of_lines == 0:
                 return AScoreEvaluationResult(
                     file_path=code_file.path,
                     line_count=0,
                     a_score=0,
                 )
-
-            if file_evaluation.number_of_functions != len(
-                file_evaluation.function_complexities
-            ):
-                error_recovery_instructions = f"Number of functions detected in the file does not match the number of function evaluations."
-                continue
 
             complexity_score = compute_file_a_score(
                 file_evaluation.function_complexities
@@ -101,6 +99,15 @@ def evaluate_a_score(
                 error_recovery_instructions = "Be very careful in output formatting!"
             else:
                 error_recovery_instructions = f"Parsing of output formatting already due to {str(e)}, please, avoid this issue again!"
+        except RateLimitError as e:
+            token_budget_estimator.push_external_costs(code_file.token_count)
+        except APITimeoutError as e:
+            return AScoreEvaluationResult(
+                file_path=code_file.path,
+                line_count=0,
+                a_score=0,
+                error_message="Timeout error. API is not available or file is to complex to analyse",
+            )
     return AScoreEvaluationResult(
         file_path=code_file.path,
         line_count=0,

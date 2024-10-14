@@ -60,19 +60,24 @@ class TokenBudgetEstimator:
     def __init__(self, token_budget: int):
         self.token_budget = token_budget
 
-    def _get_active_tokens(self) -> List[TokenUsage]:
+    def _remove_old_tokens(self):
         current_time = time.time()
         last_item_timestamp_threshold = current_time - 60
-        return [
+        self.tokens_used = [
             token
             for token in self.tokens_used
             if token.timestamp > last_item_timestamp_threshold
         ]
 
+    def push_external_costs(self, token_count):
+        with self.mutex:
+            current_time = time.time()
+            self.tokens_used.append(TokenUsage(token_count, current_time))
+
     def reserveBudget(self, code: CodeFile) -> int:
-        self.mutex.acquire(timeout=5)
-        try:
-            last_minute_used_tokens = self._get_active_tokens()
+        with self.mutex:
+            self._remove_old_tokens()
+            last_minute_used_tokens = self.tokens_used
 
             push_back_seconds = estimated_push_back_seconds(
                 code.token_count,
@@ -86,8 +91,6 @@ class TokenBudgetEstimator:
                 return 0
 
             return push_back_seconds
-        finally:
-            self.mutex.release()
 
     def await_budget(self, code: CodeFile) -> None:
         while True:
@@ -97,3 +100,8 @@ class TokenBudgetEstimator:
                 time.sleep(float(delay))
             else:
                 break
+
+    def has_tasks_in_progress(self) -> bool:
+        with self.mutex:
+            self._remove_old_tokens()
+            return len(self.tokens_used) > 0

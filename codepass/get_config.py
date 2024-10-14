@@ -22,6 +22,9 @@ class CodepassConfig:
     error_info_enabled: bool
     improvement_suggestions_enabled: bool
     clear: bool
+    max_context_size: int
+    token_rate_limit: int
+    model_name: str
 
 
 def find_ignore_files(ignore_paths: List[str]) -> List[str]:
@@ -114,10 +117,37 @@ def parser_args(default_config: dict) -> Namespace:
         action=BooleanOptionalAction,
         default=default_config.get("improvement_suggestions_enabled", True),
     )
+    parser.add_argument(
+        "-mc",
+        "--max-context-size",
+        help="OpenAI model max context size",
+        type=float,
+        default=default_config.get("max-context-size", 32 * 1000),
+    )
+    parser.add_argument(
+        "-t",
+        "--token-rate-limit",
+        help="OpenAI token rate limit per minute (RPM)",
+        type=float,
+        default=default_config.get("token-rate-limit", 200 * 1000),
+    )
+    parser.add_argument(
+        "-m",
+        "--model",
+        help="OpenAI model name",
+        type=str,
+        default=default_config.get("model", "gpt-4o-mini"),
+    )
 
     parser.add_argument("paths", nargs="*", type=str)
 
     return parser.parse_args(argv[1:])
+
+
+def validate_config(config: CodepassConfig):
+    if config.max_context_size > config.token_rate_limit:
+        print("Token rate limit should be higher that max context size")
+        exit(2)
 
 
 def get_config() -> CodepassConfig:
@@ -140,4 +170,7 @@ def get_config() -> CodepassConfig:
         details_enabled=args.details,
         error_info_enabled=args.error_info,
         improvement_suggestions_enabled=args.improvement_suggestions,
+        max_context_size=args.max_context_size,
+        token_rate_limit=args.token_rate_limit,
+        model_name=args.model,
     )

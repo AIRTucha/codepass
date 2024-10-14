@@ -7,7 +7,7 @@ from codepass.token_budget_estimator import TokenBudgetEstimator
 from dataclasses import dataclass, field
 from typing import List, Dict, Any
 from codepass.read_code_files import CodeFile
-
+from openai import RateLimitError, APITimeoutError
 from langchain_core.exceptions import OutputParserException
 
 MAX_RETRIES = 7
@@ -55,13 +55,16 @@ def compute_function_b_score(
 
 def evaluate_b_score(
     code_file: CodeFile,
+    model_name: str,
     token_budget_estimator: TokenBudgetEstimator,
 ) -> BScoreEvaluationResult:
     error_recovery_instructions = ""
     for _ in range(MAX_RETRIES):
         try:
             token_budget_estimator.await_budget(code_file)
-            file_evaluation: FileBScoreEvaluation = file_b_score_model.invoke(
+            file_evaluation: FileBScoreEvaluation = file_b_score_model(
+                model_name
+            ).invoke(
                 {
                     "code": code_file.code,
                     "error_recovery_instructions": error_recovery_instructions,
@@ -77,12 +80,6 @@ def evaluate_b_score(
                     line_count=0,
                     b_score=0,
                 )
-
-            if file_evaluation.number_of_functions != len(
-                file_evaluation.function_abstraction_level_evaluations
-            ):
-                error_recovery_instructions = f"Number of functions detected in the file does not match the number of function evaluations."
-                continue
 
             abstraction_level = compute_file_b_score(
                 file_evaluation.function_abstraction_level_evaluations
@@ -107,6 +104,15 @@ def evaluate_b_score(
                 error_recovery_instructions = "Be very careful in output formatting!"
             else:
                 error_recovery_instructions = f"Parsing of output formatting already due to {str(e)}, please, avoid this issue again!"
+        except RateLimitError as e:
+            token_budget_estimator.push_external_costs(code_file.token_count)
+        except APITimeoutError as e:
+            return BScoreEvaluationResult(
+                file_path=code_file.path,
+                line_count=0,
+                b_score=0,
+                error_message="Timeout error. API is not available or file is to complex to analyse",
+            )
     return BScoreEvaluationResult(
         file_path=code_file.path,
         line_count=0,
