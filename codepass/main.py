@@ -22,6 +22,10 @@ from typing import Dict, List
 from json import dumps
 
 
+def score_absolute_difference(a: float, b: float) -> float:
+    return abs(a - b)
+
+
 def upper_estimate_token_count(code_files: List[CodeFile]):
     return int(sum([file.token_count for file in code_files]) * 1.5)
 
@@ -114,7 +118,7 @@ def aggregate_a_score(report_files_list: List[FileReport]):
         return 0
 
     total_a_score = sum([f.a_score * f.line_count for f in report_files_list])
-    return round(total_a_score / total_lines, 2)
+    return round(total_a_score / total_lines, 1)
 
 
 def aggregate_b_score(report_files_list: List[FileReport]):
@@ -130,7 +134,7 @@ def aggregate_b_score(report_files_list: List[FileReport]):
         return 0
 
     total_b_score = sum([f.b_score * f.line_count for f in report_files_list])
-    return round(total_b_score / total_lines, 2)
+    return round(total_b_score / total_lines, 1)
 
 
 def aggregate_report(
@@ -237,7 +241,11 @@ def print_improvement_suggestions(report_files_list):
     for file in report_files_list:
         if hasattr(file, "improvement_suggestion"):
             print(Fore.YELLOW + "File:", file.file_path)
-            print()
+            if hasattr(file, "a_score"):
+                print(Fore.YELLOW + "A Score:", file.a_score)
+            if hasattr(file, "b_score"):
+                print(Fore.YELLOW + "B Score:", file.b_score)
+
             print(
                 Fore.GREEN + "Suggestion:",
                 file.improvement_suggestion.get("description"),
@@ -246,6 +254,10 @@ def print_improvement_suggestions(report_files_list):
 
 
 def print_errors(report_files_list):
+    error_count = sum(1 for f in report_files_list if hasattr(f, "error_message"))
+    if error_count == 0:
+        return
+
     print()
     print(Fore.RED + "Errors: ")
     print()
@@ -270,7 +282,9 @@ async def main():
         return
 
     code_files = read_files(config.paths, config.ignore_files)
-    report_files = get_report_files(code_files)
+    previous_report = get_report_files(code_files)
+
+    report_files = previous_report.files
 
     (changed_files, large_files) = combine_report_and_files(
         config, code_files, report_files
@@ -308,11 +322,51 @@ async def main():
 
     print()
     if report.get("a_score", 0) > 0:
-        print(f"A score: {report['a_score']}")
+        if (
+            previous_report.a_score != None
+            and score_absolute_difference(report["a_score"], previous_report.a_score)
+            > 0.1
+        ):
+            if report["a_score"] > previous_report.a_score:
+                print(
+                    "A score:",
+                    report["a_score"],
+                    Fore.GREEN
+                    + f"({round(previous_report.a_score - report['a_score'], 1)})",
+                )
+            else:
+                print(
+                    "A score:",
+                    report["a_score"],
+                    Fore.RED
+                    + f"+({round(previous_report.a_score - report['a_score'], 1)})",
+                )
+        else:
+            print("A score:", report["a_score"])
     if report.get("b_score", 0) > 0:
-        print(f"B score: {report['b_score']}")
+        if (
+            previous_report.b_score != None
+            and score_absolute_difference(report["b_score"], previous_report.b_score)
+            > 0.1
+        ):
+            if report["b_score"] > previous_report.b_score:
+                print(
+                    Fore.GREEN + "B score:",
+                    report["b_score"],
+                    Fore.GREEN
+                    + f"({round(previous_report.b_score - report['b_score'], 1)})",
+                )
+            else:
+                print(
+                    Fore.GREEN + "B score:",
+                    report["b_score"],
+                    Fore.RED
+                    + f"+({round(previous_report.b_score - report['b_score'],1)})",
+                )
+        else:
+            print(Fore.GREEN + "B score:", report["b_score"])
 
-    print(f"Done:", f"{str(round(end - start, 1))}s")
+    print(Fore.GREEN + f"Done:", f"{str(round(end - start, 1))}s")
 
     save_report(report)
 
@@ -322,7 +376,8 @@ async def main():
     ):
         print_improvement_suggestions(report_files_list)
 
-    print_errors(report_files_list)
+    if config.error_info_enabled:
+        print_errors(report_files_list)
 
     if config.a_score_enabled and report.get("a_score", 0) > config.a_score_threshold:
         print(Fore.RED + "A score is too high")

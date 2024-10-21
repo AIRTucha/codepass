@@ -15,9 +15,8 @@ class FileReport:
     def _add_error_message(
         self,
         report: AScoreEvaluationResult | BScoreEvaluationResult,
-        is_error_enabled: bool,
     ):
-        if is_error_enabled and report.error_message:
+        if report.error_message:
             if hasattr(self, "error_message"):
                 self.error_message = self.error_message + "\n\n" + report.error_message
             else:
@@ -45,7 +44,7 @@ class FileReport:
             if config.details_enabled:
                 self.b_score_details = report.details
 
-        self._add_error_message(report, config.error_info_enabled)
+        self._add_error_message(report)
 
     def mark_as_large(
         self,

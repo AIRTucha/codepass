@@ -50,7 +50,7 @@ def compute_function_b_score(
     line_count = function_complexity.line_count()
     if line_count == 0:
         return 0
-    return round(function_complexity.b_score_per_line() / line_count, 2)
+    return round(function_complexity.b_score_per_line() / line_count, 1)
 
 
 def evaluate_b_score(
@@ -74,7 +74,7 @@ def evaluate_b_score(
                 file_evaluation.function_abstraction_level_evaluations
             )
 
-            if number_of_lines == 0 or file_evaluation.number_of_functions == 0:
+            if number_of_lines == 0:
                 return BScoreEvaluationResult(
                     file_path=code_file.path,
                     line_count=0,
@@ -85,7 +85,7 @@ def evaluate_b_score(
                 file_evaluation.function_abstraction_level_evaluations
             )
 
-            b_score = round(abstraction_level / number_of_lines, 2)
+            b_score = round(abstraction_level / number_of_lines, 1)
 
             return BScoreEvaluationResult(
                 line_count=number_of_lines,

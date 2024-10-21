@@ -47,7 +47,7 @@ def compute_function_a_score(
     line_count = function_complexity.line_count()
     if line_count == 0:
         return 0
-    return round(function_complexity.a_score_per_line() / line_count, 2)
+    return round(function_complexity.a_score_per_line() / line_count, 1)
 
 
 def evaluate_a_score(
@@ -80,7 +80,7 @@ def evaluate_a_score(
             complexity_score = compute_file_a_score(
                 file_evaluation.function_complexities
             )
-            a_score = round(complexity_score / number_of_lines, 2)
+            a_score = round(complexity_score / number_of_lines, 1)
 
             return AScoreEvaluationResult(
                 line_count=number_of_lines,
