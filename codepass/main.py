@@ -277,6 +277,10 @@ async def main():
     start = time.time()
     config = get_config()
 
+    if config.print_version:
+        print(version("codepass"))
+        exit(0)
+
     if validate_config(config):
         print("No analysis enabled")
         return

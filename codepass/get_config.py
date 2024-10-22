@@ -25,6 +25,7 @@ class CodepassConfig:
     max_context_size: int
     token_rate_limit: int
     model_name: str
+    print_version: bool
 
 
 def find_ignore_files(ignore_paths: List[str]) -> List[str]:
@@ -138,6 +139,12 @@ def parser_args(default_config: dict) -> Namespace:
         type=str,
         default=default_config.get("model", "gpt-4o-mini"),
     )
+    parser.add_argument(
+        "version",
+        help="Print version",
+        type=bool,
+        default=False,
+    )
 
     parser.add_argument("paths", nargs="*", type=str)
 
@@ -173,4 +180,5 @@ def get_config() -> CodepassConfig:
         max_context_size=args.max_context_size,
         token_rate_limit=args.token_rate_limit,
         model_name=args.model,
+        print_version=args.version,
     )

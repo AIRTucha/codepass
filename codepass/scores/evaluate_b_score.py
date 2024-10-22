@@ -113,6 +113,13 @@ def evaluate_b_score(
                 b_score=0,
                 error_message="Timeout error. API is not available or file is to complex to analyse",
             )
+        except Exception as e:
+            return BScoreEvaluationResult(
+                file_path=code_file.path,
+                line_count=0,
+                b_score=0,
+                error_message=str(e),
+            )
     return BScoreEvaluationResult(
         file_path=code_file.path,
         line_count=0,

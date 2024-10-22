@@ -175,7 +175,7 @@ class FileAScoreEvaluation(BaseModel):
     )
 
     def __str__(self) -> str:
-        return "\n".join(str(f) for f in self.function_complexity)
+        return "\n".join(str(f) for f in self.function_complexities)
 
 
 file_a_score_parser = PydanticOutputParser(pydantic_object=FileAScoreEvaluation)

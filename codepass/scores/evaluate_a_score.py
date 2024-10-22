@@ -108,6 +108,13 @@ def evaluate_a_score(
                 a_score=0,
                 error_message="Timeout error. API is not available or file is to complex to analyse",
             )
+        except Exception as e:
+            return AScoreEvaluationResult(
+                file_path=code_file.path,
+                line_count=0,
+                a_score=0,
+                error_message=str(e),
+            )
     return AScoreEvaluationResult(
         file_path=code_file.path,
         line_count=0,
