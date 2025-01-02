@@ -140,9 +140,11 @@ def parser_args(default_config: dict) -> Namespace:
         default=default_config.get("model", "gpt-4o-mini"),
     )
     parser.add_argument(
-        "version",
+        "-v",
+        "--version",
         help="Print version",
         type=bool,
+        action=BooleanOptionalAction,
         default=False,
     )
 

@@ -96,70 +96,20 @@ class FunctionAScoreEvaluation(BaseModel):
             / 15
         )
 
-    def _normalized_mean_correction_sum_weighted_sq_complexity_score(self) -> float:
-        linear_mean = self._mean_weighted_linear_complexity_score()
-
-        if linear_mean == 0:
-            return 0
-
-        weighted_advanced_programming_techniques_usage = 5 * math.pow(
-            self.advanced_code_techniques_score, 2
-        )
-        weighted_technical_domain_expertise_usage = 4 * (
-            math.pow(self.technical_domain_knowledge_score, 2)
-        )
-        weighted_algorithms_usage = 3 * math.pow(
-            self.project_specific_knowledge_score, 2
-        )
-        weighted_computation_usage = 2 * math.pow(self.cognitive_complexity_score, 2)
-        weighted_project_specific_knowledge_usage = 1 * math.pow(
-            self.readability_score, 2
-        )
-
-        sq_mean = (
-            sum(
-                [
-                    weighted_advanced_programming_techniques_usage,
-                    weighted_technical_domain_expertise_usage,
-                    weighted_algorithms_usage,
-                    weighted_computation_usage,
-                    weighted_project_specific_knowledge_usage,
-                ]
-            )
-            / 15
-        )
-
-        sum_weighted_sq_complexity_score = (
-            weighted_advanced_programming_techniques_usage
-            + weighted_technical_domain_expertise_usage
-            + weighted_algorithms_usage
-            + weighted_computation_usage
-            + weighted_project_specific_knowledge_usage
-        )
-        sum_weighted_sq_complexity_score_mean_correction = (
-            sum_weighted_sq_complexity_score * (linear_mean / sq_mean)
-        )
-        normalized_mean_correction_sum_weighted_sq_complexity_score = (
-            sum_weighted_sq_complexity_score_mean_correction / 15
-        )
-
-        return normalized_mean_correction_sum_weighted_sq_complexity_score
-
     def a_score_per_line(self) -> float:
         if self.is_setup_of_declaration:
             return 0
         line_count = self.line_count()
-        _normalized_mean_correction_sum_weighted_sq_complexity_score = (
-            self._normalized_mean_correction_sum_weighted_sq_complexity_score()
+        _mean_weighted_linear_complexity_score = (
+            self._mean_weighted_linear_complexity_score()
         )
         line_complexity_coefficient = (line_count / 10) ** (1 / 4)
-        _normalized_mean_correction_sum_weighted_sq_complexity_score_with_line_complexity = (
-            _normalized_mean_correction_sum_weighted_sq_complexity_score
-            * line_complexity_coefficient
+        _mean_weighted_linear_complexity_score_with_line_complexity = (
+            _mean_weighted_linear_complexity_score * line_complexity_coefficient
         )
 
         a_score = SCORE_MIN_VALUE + SCORE_RANGE_VALUE * math.tanh(
-            _normalized_mean_correction_sum_weighted_sq_complexity_score_with_line_complexity
+            _mean_weighted_linear_complexity_score_with_line_complexity
         )
         a_score_pre_line = a_score * line_count
 
