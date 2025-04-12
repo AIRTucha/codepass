@@ -103,7 +103,7 @@ class FunctionAScoreEvaluation(BaseModel):
         _mean_weighted_linear_complexity_score = (
             self._mean_weighted_linear_complexity_score()
         )
-        line_complexity_coefficient = (line_count / 10) ** (1 / 4)
+        line_complexity_coefficient = math.sqrt(line_count / 10)
         _mean_weighted_linear_complexity_score_with_line_complexity = (
             _mean_weighted_linear_complexity_score * line_complexity_coefficient
         )
